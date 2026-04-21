@@ -12,8 +12,33 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
-anthropic:
-  api-key: ${ANTHROPIC_API_KEY:}
+# LLM 설정 — provider 값으로 어댑터 자동 선택
+# provider: ollama | anthropic | openai | groq | lmstudio
+llm:
+  provider: ${LLM_PROVIDER:ollama}
+  model: ${LLM_MODEL:llama3.1}
+  base-url: ${LLM_BASE_URL:http://localhost:11434/v1}
+  api-key: ${LLM_API_KEY:ollama}
+
+# Anthropic을 사용할 경우 아래 설정
+# llm:
+#   provider: anthropic
+#   model: claude-haiku-4-5-20251001
+#   api-key: ${ANTHROPIC_API_KEY}
+
+# OpenAI를 사용할 경우
+# llm:
+#   provider: openai
+#   model: gpt-4o-mini
+#   base-url: https://api.openai.com/v1
+#   api-key: ${OPENAI_API_KEY}
+
+# Groq (무료 쿼터)
+# llm:
+#   provider: groq
+#   model: llama-3.1-8b-instant
+#   base-url: https://api.groq.com/openai/v1
+#   api-key: ${GROQ_API_KEY}
 
 qdrant:
   host: ${QDRANT_HOST:localhost}

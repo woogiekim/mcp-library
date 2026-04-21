@@ -1,40 +1,19 @@
 package com.mcplibrary.application
 
-import com.anthropic.client.AnthropicClient
-import com.anthropic.client.okhttp.AnthropicOkHttpClient
-import com.anthropic.models.MessageCreateParams
-import com.anthropic.models.Model
-import com.anthropic.models.TextBlockParam
-import com.anthropic.models.CacheControlEphemeral
+import com.mcplibrary.domain.llm.LlmPort
+import com.mcplibrary.domain.llm.LlmRequest
 import com.mcplibrary.domain.usecase.UseCase
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 @Service
-class LlmService(
-    @Value("\${anthropic.api-key}") private val apiKey: String,
-) {
-    private val client: AnthropicClient by lazy {
-        AnthropicOkHttpClient.builder().apiKey(apiKey).build()
-    }
+class LlmService(private val llmPort: LlmPort) {
 
     fun answer(query: String, relevantUseCases: List<UseCase>): String {
-        val systemPrompt = buildSystemPrompt(relevantUseCases)
-        val params = MessageCreateParams.builder()
-            .model(Model.CLAUDE_SONNET_4_5)
-            .maxTokens(2048)
-            .system(listOf(
-                TextBlockParam.builder()
-                    .text(systemPrompt)
-                    .cacheControl(CacheControlEphemeral.builder().build())
-                    .build()
-            ))
-            .addUserMessage(query)
-            .build()
-
-        val message = client.messages().create(params)
-        return message.content().filterIsInstance<com.anthropic.models.TextBlock>()
-            .joinToString("") { it.text() }
+        val request = LlmRequest(
+            systemPrompt = buildSystemPrompt(relevantUseCases),
+            userMessage = query,
+        )
+        return llmPort.complete(request).content
     }
 
     private fun buildSystemPrompt(useCases: List<UseCase>): String {
