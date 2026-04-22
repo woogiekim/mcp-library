@@ -31,7 +31,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 Search
               </a>
               <div className="w-px h-3 bg-slate-200 mx-1" />
-              <span className="px-2.5 py-1 text-xs font-semibold bg-gradient-to-r from-violet-600 to-cyan-500 text-white rounded-full shadow-sm shadow-violet-200">
+              <a
+                href="/new"
+                className="px-3 py-1.5 text-xs font-semibold text-white bg-gradient-to-r from-violet-600 to-cyan-500 hover:from-violet-700 hover:to-cyan-600 rounded-md transition-all shadow-sm shadow-violet-200"
+              >
+                + 등록
+              </a>
+              <div className="w-px h-3 bg-slate-200 mx-1" />
+              <span className="px-2.5 py-1 text-xs font-semibold bg-violet-50 text-violet-600 rounded-full border border-violet-100">
                 Beta
               </span>
             </nav>
