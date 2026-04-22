@@ -1,0 +1,27 @@
+# macOS
+.DS_Store
+
+# Node
+node_modules/
+package-lock.json
+.next/
+next-env.d.ts
+
+# Gradle
+.gradle/
+build/
+gradlew
+gradlew.bat
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Env
+.env
+.env.local
+.env*.local
+
+# Logs
+*.log
