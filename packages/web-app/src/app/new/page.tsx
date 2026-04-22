@@ -37,7 +37,7 @@ function nowTime() {
 
 const GREETING = '안녕하세요! 어떤 업무 프로세스를 UseCase로 만들고 싶으신가요?\n예: "주문 취소 프로세스", "회원 등급 산정 방식", "리뷰 작성 정책" 등 자유롭게 설명해주세요.'
 
-type Step = 'chat' | 'extracted' | 'saved'
+type Step = 'chat' | 'extracting' | 'extracted' | 'saved'
 
 export default function NewUseCasePage() {
   const [messages, setMessages] = useState<Message[]>([
@@ -45,20 +45,44 @@ export default function NewUseCasePage() {
   ])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
-  const [extracting, setExtracting] = useState(false)
   const [extracted, setExtracted] = useState<ExtractedUseCase | null>(null)
   const [saving, setSaving] = useState(false)
   const [savedId, setSavedId] = useState('')
   const [step, setStep] = useState<Step>('chat')
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const extractingRef = useRef(false)
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages, loading])
+  }, [messages, loading, step])
+
+  async function autoExtract(msgs: Message[]) {
+    if (extractingRef.current) return
+    extractingRef.current = true
+    setStep('extracting')
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: msgs.map(({ role, content }) => ({ role, content })), extract: true }),
+      })
+      const data = await res.json()
+      if (data.useCase) {
+        setExtracted(data.useCase)
+        setStep('extracted')
+      } else {
+        setStep('chat')
+      }
+    } catch {
+      setStep('chat')
+    } finally {
+      extractingRef.current = false
+    }
+  }
 
   async function sendMessage() {
-    if (!input.trim() || loading || step === 'saved') return
+    if (!input.trim() || loading || step === 'saved' || step === 'extracting') return
     const userMsg: Message = { role: 'user', content: input.trim(), time: nowTime() }
     const next = [...messages, userMsg]
     setMessages(next)
@@ -72,30 +96,14 @@ export default function NewUseCasePage() {
       })
       const data = await res.json()
       if (data.message) {
-        setMessages(prev => [...prev, { role: 'assistant', content: data.message, time: nowTime() }])
+        const updated = [...next, { role: 'assistant' as const, content: data.message, time: nowTime() }]
+        setMessages(updated)
+        if (data.readyToExtract) {
+          autoExtract(updated)
+        }
       }
     } finally {
       setLoading(false)
-    }
-  }
-
-  async function handleExtract() {
-    setExtracting(true)
-    try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: messages.map(({ role, content }) => ({ role, content })), extract: true }),
-      })
-      const data = await res.json()
-      if (data.useCase) {
-        setExtracted(data.useCase)
-        setStep('extracted')
-      } else {
-        alert('추출에 실패했습니다. 더 자세히 설명해주세요.')
-      }
-    } finally {
-      setExtracting(false)
     }
   }
 
@@ -125,7 +133,7 @@ export default function NewUseCasePage() {
     }
   }
 
-  const canExtract = messages.length >= 3 && step === 'chat'
+  const isIdle = step === 'chat' || step === 'extracting'
 
   return (
     <div className="flex flex-col" style={{ height: 'calc(100vh - 130px)', minHeight: '580px' }}>
@@ -139,16 +147,16 @@ export default function NewUseCasePage() {
           </Link>
           <div>
             <h1 className="text-lg font-bold text-slate-900">UseCase 등록</h1>
-            <p className="text-xs text-slate-400">AI와 대화하며 UseCase를 도출하세요</p>
+            <p className="text-xs text-slate-400">AI와 대화하면 자동으로 UseCase가 도출됩니다</p>
           </div>
         </div>
 
         {/* Stepper */}
         <div className="flex items-center gap-0">
-          {(['chat', 'extracted', 'saved'] as Step[]).map((s, i) => {
+          {(['chat', 'extracted', 'saved'] as const).map((s, i) => {
             const labels = ['대화', '검토', '등록']
             const isDone = (step === 'extracted' && i === 0) || (step === 'saved' && i <= 1)
-            const isCurrent = step === s
+            const isCurrent = (step === 'chat' || step === 'extracting') ? s === 'chat' : step === s
             return (
               <div key={s} className="flex items-center">
                 <div className="flex items-center gap-1.5">
@@ -189,6 +197,15 @@ export default function NewUseCasePage() {
               <p className="text-xs font-semibold text-slate-800">UseCase 분석가</p>
               <p className="text-[10px] text-slate-400">AI · 온라인</p>
             </div>
+            {step === 'extracting' && (
+              <div className="ml-auto flex items-center gap-1.5 text-[10px] text-violet-600 font-medium">
+                <svg className="animate-spin w-3 h-3" viewBox="0 0 24 24" fill="none">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                </svg>
+                UseCase 추출 중...
+              </div>
+            )}
           </div>
 
           {/* Messages */}
@@ -217,7 +234,7 @@ export default function NewUseCasePage() {
               </div>
             ))}
 
-            {loading && (
+            {(loading || step === 'extracting') && (
               <div className="flex gap-2 justify-start">
                 <div className="w-6 h-6 rounded-md bg-violet-600 flex items-center justify-center shrink-0 mt-1">
                   <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
@@ -240,17 +257,6 @@ export default function NewUseCasePage() {
 
           {/* Input area */}
           <div className="shrink-0 px-4 py-3 border-t border-slate-100">
-            {canExtract && (
-              <div className="mb-2">
-                <button
-                  onClick={handleExtract}
-                  disabled={extracting}
-                  className="btn-fa w-full justify-center text-xs disabled:opacity-50"
-                >
-                  {extracting ? 'UseCase 추출 중...' : 'UseCase 추출하기'}
-                </button>
-              </div>
-            )}
             <div className="flex gap-2 items-center">
               <input
                 ref={inputRef}
@@ -259,12 +265,12 @@ export default function NewUseCasePage() {
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && !e.shiftKey && sendMessage()}
                 placeholder="업무 프로세스를 자유롭게 설명하세요..."
-                disabled={loading || step === 'saved'}
+                disabled={loading || !isIdle}
                 className="flex-1 text-sm px-4 py-2.5 rounded-lg border border-slate-200 focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20 outline-none placeholder:text-slate-400 disabled:text-slate-400 bg-white"
               />
               <button
                 onClick={sendMessage}
-                disabled={!input.trim() || loading || step === 'saved'}
+                disabled={!input.trim() || loading || !isIdle}
                 className="btn-fa w-10 h-10 !p-0 justify-center disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
               >
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -279,16 +285,21 @@ export default function NewUseCasePage() {
         <div className="col-span-2 flex flex-col min-h-0 overflow-y-auto">
           {step === 'chat' ? (
             <div className="flex-1 flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 p-8 text-center">
-              <p className="text-sm font-medium text-slate-500">추출 결과가 여기 나타납니다</p>
+              <p className="text-sm font-medium text-slate-500">대화하면 자동으로 추출됩니다</p>
               <p className="text-xs text-slate-400 mt-2 leading-relaxed">
-                AI와 충분히 대화한 후<br/>
-                <span className="text-violet-600">UseCase 추출하기</span>를 눌러주세요
+                AI와 자연스럽게 대화하세요.<br/>
+                충분한 정보가 모이면 자동으로<br/>
+                UseCase가 도출됩니다.
               </p>
-              {messages.length < 3 && (
-                <p className="mt-4 text-[11px] text-amber-600 bg-amber-50 px-3 py-1.5 rounded-lg">
-                  최소 {3 - messages.length}개의 대화가 더 필요합니다
-                </p>
-              )}
+            </div>
+          ) : step === 'extracting' ? (
+            <div className="flex-1 flex flex-col items-center justify-center rounded-xl border border-violet-100 bg-violet-50 p-8 text-center">
+              <svg className="animate-spin w-8 h-8 text-violet-500 mb-4" viewBox="0 0 24 24" fill="none">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"/>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+              </svg>
+              <p className="text-sm font-medium text-violet-700">UseCase 추출 중...</p>
+              <p className="text-xs text-violet-500 mt-1">대화 내용을 분석하고 있습니다</p>
             </div>
           ) : step === 'saved' ? (
             <div className="flex-1 flex flex-col items-center justify-center rounded-xl border border-emerald-200 bg-emerald-50 p-8 text-center">
