@@ -97,7 +97,7 @@ export default async function UseCaseDetailPage({ params }: Props) {
                 <div className="flex-1 pb-5 pt-1">
                   <p className="text-sm text-slate-800 leading-relaxed">{step.description}</p>
                   {step.expected && (
-                    <p className="mt-1 text-xs text-slate-400">→ {step.expected}</p>
+                    <p className="mt-1 text-xs text-slate-500">→ {step.expected}</p>
                   )}
                 </div>
               </li>
@@ -110,9 +110,9 @@ export default async function UseCaseDetailPage({ params }: Props) {
         <h2 className="text-xs font-semibold text-slate-400 uppercase tracking-widest">규칙</h2>
         <ul className="space-y-2">
           {useCase.rules.map(rule => (
-            <li key={rule.id} className="rounded-lg border border-slate-100 overflow-hidden">
+            <li key={rule.id} className="rounded-lg border border-slate-200 overflow-hidden">
               <div className="flex">
-                <div className="w-1 shrink-0 bg-violet-400" />
+                <div className="w-1 shrink-0 bg-violet-500" />
                 <div className="flex-1 p-4 space-y-2">
                   <p className="text-sm text-slate-800">{rule.description}</p>
                   {rule.constraint && (
@@ -133,7 +133,7 @@ export default async function UseCaseDetailPage({ params }: Props) {
           <h2 className="text-xs font-semibold text-slate-400 uppercase tracking-widest">예외 처리</h2>
           <ul className="space-y-2">
             {useCase.exceptions.map(exc => (
-              <li key={exc.id} className="rounded-lg border border-slate-100 overflow-hidden">
+              <li key={exc.id} className="rounded-lg border border-slate-200 overflow-hidden">
                 <div className="flex">
                   <div className="w-1 shrink-0 bg-rose-400" />
                   <div className="flex-1 p-4 space-y-1">

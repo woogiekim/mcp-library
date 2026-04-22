@@ -39,7 +39,7 @@ export function UseCaseCard({ useCase }: Props) {
         </h3>
 
         {useCase.rules.length > 0 && (
-          <p className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed">
+          <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">
             {useCase.rules[0].constraint}
           </p>
         )}

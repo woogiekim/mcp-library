@@ -31,7 +31,7 @@ export function SearchBar({ onSearch }: Props) {
     <form onSubmit={handleSubmit}>
       <div className={`relative flex items-center rounded-2xl border-2 bg-white transition-all duration-150 ${
         focused
-          ? 'border-[#1e3a5f] shadow-lg shadow-slate-100'
+          ? 'border-violet-500 ring-2 ring-violet-100 shadow-sm'
           : 'border-slate-200 hover:border-slate-300'
       }`}>
         <div className="absolute left-5 text-slate-400 pointer-events-none">
@@ -49,7 +49,7 @@ export function SearchBar({ onSearch }: Props) {
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           placeholder="결제 취소 정책, 회원 등급 기준, 배송 상태 조회..."
-          className="w-full pl-14 pr-6 py-5 bg-transparent text-base text-slate-800 placeholder:text-slate-400 outline-none rounded-2xl"
+          className="w-full pl-14 pr-6 py-4 bg-transparent text-base text-slate-800 placeholder:text-slate-400 outline-none rounded-2xl"
         />
       </div>
 
