@@ -11,11 +11,8 @@
   --bg-base: #F8FAFC;
 }
 
-/* Dot-grid background */
 body {
-  background-color: var(--bg-base);
-  background-image: radial-gradient(circle, #CBD5E1 1px, transparent 1px);
-  background-size: 28px 28px;
+  background-color: #ffffff;
   min-height: 100vh;
 }
 

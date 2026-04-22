@@ -58,57 +58,59 @@ export default function HomePage() {
 
   return (
     <div className="space-y-12">
-      {/* Hero */}
-      <div className="text-center space-y-6 pt-8 pb-2">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-50 border border-violet-100 text-xs font-semibold text-violet-700">
-          <span className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse" />
-          UseCase-Grounded AI Search
+      {/* Hero — full-width gradient band */}
+      <div className="-mx-6 -mt-10 px-6 pt-16 pb-12 mb-4 bg-gradient-to-b from-slate-50 to-white border-b border-slate-100">
+        <div className="max-w-2xl mx-auto text-center space-y-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-100 border border-violet-200 text-xs font-bold text-violet-700 uppercase tracking-wide">
+            <span className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse" />
+            UseCase-Grounded AI Search
+          </div>
+
+          <h1 className="text-5xl sm:text-6xl font-black tracking-tight text-slate-900 leading-[1.08]">
+            도메인 지식을{' '}
+            <span className="text-gradient-violet">자연어</span>
+            로 검색
+          </h1>
+
+          <p className="text-slate-500 text-base max-w-md mx-auto leading-relaxed">
+            팀이 정의한 UseCase 기반으로 AI가 정확하게 답변합니다.
+            규칙과 시나리오에 근거한 신뢰할 수 있는 지식 검색.
+          </p>
+
+          {/* Search bar */}
+          <div className="pt-2">
+            <SearchBar onSearch={handleSearch} />
+          </div>
+
+          {/* Stats */}
+          <div className="flex items-center justify-center gap-8 pt-1 border-t border-slate-100 pt-5">
+            {[
+              { value: '10+', label: 'UseCases' },
+              { value: '5',   label: 'Domains' },
+              { value: 'MCP', label: 'Powered' },
+            ].map((s, i) => (
+              <div key={s.label} className="flex items-center gap-8">
+                <div className="text-center">
+                  <div className="text-xl font-black text-slate-900">{s.value}</div>
+                  <div className="text-[11px] text-slate-400 font-medium mt-0.5 uppercase tracking-wide">{s.label}</div>
+                </div>
+                {i < 2 && <div className="w-px h-6 bg-slate-200" />}
+              </div>
+            ))}
+          </div>
         </div>
-
-        <h1 className="text-5xl sm:text-6xl font-black tracking-tight text-slate-900 leading-[1.1]">
-          도메인 지식을{' '}
-          <span className="text-gradient-violet">자연어</span>
-          로 검색
-        </h1>
-
-        <p className="text-slate-500 text-lg max-w-lg mx-auto leading-relaxed">
-          팀이 정의한 UseCase를 기반으로<br/>
-          AI가 정확하게 답변합니다.
-        </p>
-
-        {/* Stats row */}
-        <div className="flex items-center justify-center gap-8 pt-2">
-          {[
-            { value: '10+', label: 'UseCases' },
-            { value: '5',   label: 'Domains' },
-            { value: 'AI',  label: 'Powered Search' },
-          ].map(s => (
-            <div key={s.label} className="text-center">
-              <div className="text-2xl font-black text-slate-900">{s.value}</div>
-              <div className="text-xs text-slate-400 font-medium mt-0.5">{s.label}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Search */}
-      <div className="max-w-2xl mx-auto">
-        <SearchBar onSearch={handleSearch} />
       </div>
 
       {/* Loading skeletons */}
       {loading && (
-        <div className="space-y-3 max-w-3xl mx-auto">
-          {[1, 2, 3].map(i => (
-            <div key={i} className="flex rounded-xl border border-slate-100 bg-white overflow-hidden">
-              <div className="w-1 bg-slate-200 shrink-0" />
-              <div className="flex-1 px-5 py-4 space-y-3">
-                <div className="flex gap-2">
-                  <div className="shimmer h-4 w-16 rounded-full" />
-                  <div className="shimmer h-4 w-10 rounded-full" />
-                </div>
+        <div className="grid grid-cols-2 gap-4">
+          {[1, 2, 3, 4].map(i => (
+            <div key={i} className="flex flex-col rounded-xl border border-slate-100 bg-white overflow-hidden">
+              <div className="shimmer h-10 w-full" />
+              <div className="px-4 py-4 space-y-3">
                 <div className="shimmer h-5 w-3/4 rounded-lg" />
-                <div className="shimmer h-4 w-1/2 rounded-md" />
+                <div className="shimmer h-4 w-full rounded-md" />
+                <div className="shimmer h-4 w-2/3 rounded-md" />
               </div>
             </div>
           ))}
@@ -117,7 +119,7 @@ export default function HomePage() {
 
       {/* Results */}
       {!loading && results.length > 0 && (
-        <div className="space-y-4 max-w-3xl mx-auto">
+        <div className="space-y-4">
           {/* Result header + domain filter */}
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-2">
@@ -152,8 +154,8 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Cards */}
-          <div className="grid gap-2.5">
+          {/* Cards — 2 column grid */}
+          <div className="grid grid-cols-2 gap-4">
             {filtered.map(uc => (
               <UseCaseCard key={uc.id} useCase={uc} />
             ))}
