@@ -264,7 +264,7 @@ export default function NewUseCasePage() {
                 <button
                   onClick={handleExtract}
                   disabled={extracting}
-                  className="w-full flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-semibold border border-violet-200 text-violet-700 bg-violet-50 hover:bg-violet-100 disabled:opacity-50 transition-all"
+                  className="btn-fa w-full justify-center text-xs disabled:opacity-50"
                 >
                   {extracting ? (
                     <>
@@ -308,7 +308,7 @@ export default function NewUseCasePage() {
               <button
                 onClick={sendMessage}
                 disabled={!input.trim() || loading || step === 'saved'}
-                className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-blue-600 text-white flex items-center justify-center hover:from-violet-500 hover:to-blue-500 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm shadow-violet-200 hover:shadow-md active:scale-95 shrink-0"
+                className="btn-fa w-10 h-10 !p-0 justify-center disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path d="M14 2L7 9M14 2L9.5 14L7 9L2 6.5L14 2Z" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -475,7 +475,7 @@ export default function NewUseCasePage() {
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="w-full py-3 rounded-xl text-sm font-black text-white bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-500 hover:to-blue-500 disabled:opacity-50 transition-all shadow-md shadow-violet-200 hover:shadow-lg active:scale-[0.98]"
+                className="btn-fa w-full justify-center text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {saving ? (
                   <span className="flex items-center justify-center gap-2">

@@ -192,10 +192,7 @@ export default function HomePage() {
             </p>
             <p className="text-sm text-slate-400 mt-1">다른 키워드로 검색하거나 UseCase를 새로 등록해보세요</p>
           </div>
-          <a
-            href="/new"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-violet-600 hover:bg-violet-500 transition-colors shadow-sm"
-          >
+          <a href="/new" className="btn-fa text-sm">
             + UseCase 등록하기
           </a>
         </div>
