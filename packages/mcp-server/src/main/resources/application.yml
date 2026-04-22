@@ -16,7 +16,7 @@ spring:
 # provider: ollama | anthropic | openai | groq | lmstudio
 llm:
   provider: ${LLM_PROVIDER:ollama}
-  model: ${LLM_MODEL:llama3.1}
+  model: ${LLM_MODEL:llama3.2:3b}
   base-url: ${LLM_BASE_URL:http://localhost:11434/v1}
   api-key: ${LLM_API_KEY:ollama}
 
@@ -42,7 +42,7 @@ llm:
 
 qdrant:
   host: ${QDRANT_HOST:localhost}
-  port: ${QDRANT_PORT:6334}
+  port: ${QDRANT_PORT:6333}   # 6333 = HTTP REST, 6334 = gRPC
 
 server:
   port: 8080

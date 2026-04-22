@@ -22,11 +22,11 @@ class OpenAiCompatibleLlmAdapter(
 ) : LlmPort {
 
     private val restClient: RestClient by lazy {
-        RestClient.builder()
-            .baseUrl(baseUrl)
-            .defaultHeader("Authorization", "Bearer $apiKey")
-            .defaultHeader("Content-Type", "application/json")
-            .build()
+        HttpClientFactory.restClient(
+            baseUrl,
+            "Authorization" to "Bearer $apiKey",
+            "Content-Type" to "application/json",
+        )
     }
 
     override fun complete(request: LlmRequest): LlmResponse {

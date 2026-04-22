@@ -1,6 +1,7 @@
 package com.mcplibrary.infrastructure.persistence
 
 import com.mcplibrary.domain.usecase.*
+import com.mcplibrary.domain.usecase.Version
 import jakarta.persistence.*
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository

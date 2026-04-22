@@ -3,7 +3,7 @@ package com.mcplibrary.presentation
 import com.mcplibrary.application.*
 import com.mcplibrary.domain.usecase.UseCase
 import com.mcplibrary.domain.usecase.UseCaseId
-import com.mcplibrary.domain.usecase.UseCaseNotFoundException
+import com.mcplibrary.application.UseCaseNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
