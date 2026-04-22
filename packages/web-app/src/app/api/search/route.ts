@@ -1,25 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+const MCP_SERVER_URL = process.env.MCP_SERVER_URL ?? 'http://localhost:8080'
+
 export async function GET(req: NextRequest) {
-  const query = req.nextUrl.searchParams.get('q') ?? ''
-  if (!query.trim()) {
-    return NextResponse.json({ useCases: [], total: 0 })
+  const q = req.nextUrl.searchParams.get('q') ?? ''
+  if (!q.trim()) {
+    return NextResponse.json({ useCases: [], total: 0, query: q })
   }
 
   try {
-    const res = await fetch(`${process.env.MCP_SERVER_URL}/search`, {
+    const res = await fetch(`${MCP_SERVER_URL}/search`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query, limit: 10 }),
+      body: JSON.stringify({ query: q, limit: 20 }),
     })
-
-    if (!res.ok) {
-      return NextResponse.json({ useCases: [], total: 0 }, { status: res.status })
-    }
-
     const data = await res.json()
-    return NextResponse.json(data)
-  } catch {
-    return NextResponse.json({ error: 'Search failed' }, { status: 500 })
+    return NextResponse.json(data, { status: res.status })
+  } catch (e) {
+    return NextResponse.json({ error: String(e) }, { status: 500 })
   }
 }
