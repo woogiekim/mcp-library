@@ -3,8 +3,9 @@
 @tailwind utilities;
 
 :root {
-  --fa-mint: #5EEBD0;
-  --fa-navy: #1e3a5f;
+  --btn-bg:     #7C3AED;
+  --btn-border: #6D28D9;
+  --btn-shadow: #5B21B6;
 }
 
 body {
@@ -22,28 +23,30 @@ body {
   }
 }
 
-/* Font Awesome style button — mint bg + dark navy 3D shadow */
+/* Primary button — violet with border + 3D shadow */
 .btn-fa {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1.1rem;
-  background-color: var(--fa-mint);
-  color: var(--fa-navy);
+  background-color: var(--btn-bg);
+  color: #ffffff;
   font-weight: 700;
   border-radius: 0.75rem;
-  box-shadow: 0 4px 0 0 var(--fa-navy);
+  border: 1.5px solid var(--btn-border);
+  box-shadow: 0 4px 0 0 var(--btn-shadow);
   transition: box-shadow 0.1s ease, transform 0.1s ease;
   white-space: nowrap;
 }
 
 .btn-fa:hover {
-  box-shadow: 0 2px 0 0 var(--fa-navy);
+  background-color: #6D28D9;
+  box-shadow: 0 2px 0 0 var(--btn-shadow);
   transform: translateY(2px);
 }
 
 .btn-fa:active {
-  box-shadow: 0 0 0 0 var(--fa-navy);
+  box-shadow: 0 0 0 0 var(--btn-shadow);
   transform: translateY(4px);
 }
 
