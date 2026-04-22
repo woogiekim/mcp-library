@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --btn-bg:     #7C3AED;
-  --btn-border: #6D28D9;
+  --btn-bg:     #ffffff;
+  --btn-border: #7C3AED;
   --btn-shadow: #5B21B6;
 }
 
@@ -30,7 +30,7 @@ body {
   gap: 0.5rem;
   padding: 0.5rem 1.1rem;
   background-color: var(--btn-bg);
-  color: #ffffff;
+  color: #7C3AED;
   font-weight: 700;
   border-radius: 0.75rem;
   border: 1.5px solid var(--btn-border);
@@ -40,7 +40,7 @@ body {
 }
 
 .btn-fa:hover {
-  background-color: #6D28D9;
+  background-color: #F5F3FF;
   box-shadow: 0 2px 0 0 var(--btn-shadow);
   transform: translateY(2px);
 }
