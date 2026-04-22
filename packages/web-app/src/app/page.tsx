@@ -28,12 +28,12 @@ export default function HomePage() {
     <div className="space-y-10">
       {/* Hero */}
       <div className="text-center space-y-4 pt-6 pb-2">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-50 border border-violet-100 text-xs font-medium text-violet-600 mb-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse" />
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-xs font-medium text-violet-400 mb-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
           MCP · UseCase-Grounded AI
         </div>
 
-        <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-slate-900 leading-tight">
+        <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-slate-100 leading-tight">
           도메인 지식을{' '}
           <span className="text-gradient-violet">자연어</span>
           로 검색
@@ -55,7 +55,7 @@ export default function HomePage() {
       {loading && (
         <div className="space-y-3 max-w-2xl mx-auto">
           {[1, 2, 3].map(i => (
-            <div key={i} className="rounded-2xl border border-slate-100 bg-white p-5 space-y-3">
+            <div key={i} className="rounded-2xl border border-[#2A3042] bg-[#161B27] p-5 space-y-3">
               <div className="flex gap-2">
                 <div className="shimmer h-5 w-16 rounded-full" />
                 <div className="shimmer h-5 w-12 rounded-full" />
@@ -71,11 +71,11 @@ export default function HomePage() {
       {!loading && results.length > 0 && (
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-medium text-slate-400">검색어</span>
-            <span className="px-2.5 py-0.5 rounded-full bg-violet-50 text-violet-700 text-xs font-semibold border border-violet-100">
+            <span className="text-xs font-medium text-slate-600">검색어</span>
+            <span className="px-2.5 py-0.5 rounded-full bg-violet-500/15 text-violet-300 text-xs font-semibold border border-violet-500/30">
               {query}
             </span>
-            <span className="text-xs text-slate-400">— {results.length}개 결과</span>
+            <span className="text-xs text-slate-600">— {results.length}개 결과</span>
           </div>
 
           <div className="grid gap-3">
@@ -89,16 +89,16 @@ export default function HomePage() {
       {/* Empty */}
       {!loading && hasSearched && results.length === 0 && (
         <div className="text-center py-16 space-y-3">
-          <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-slate-400">
+          <div className="w-12 h-12 rounded-2xl bg-[#1E2433] flex items-center justify-center mx-auto">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-slate-500">
               <circle cx="11" cy="11" r="8"/>
               <path d="M21 21l-4.35-4.35"/>
             </svg>
           </div>
-          <p className="text-sm text-slate-500 font-medium">
+          <p className="text-sm text-slate-400 font-medium">
             &quot;{query}&quot;에 해당하는 UseCase가 없습니다
           </p>
-          <p className="text-xs text-slate-400">다른 키워드로 검색해보세요</p>
+          <p className="text-xs text-slate-600">다른 키워드로 검색해보세요</p>
         </div>
       )}
 
@@ -113,10 +113,10 @@ export default function HomePage() {
             <button
               key={label}
               onClick={() => handleSearch(label)}
-              className="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-slate-100 bg-white hover:border-violet-200 hover:bg-violet-50/50 transition-all text-center group"
+              className="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-[#2A3042] bg-[#161B27] hover:border-violet-500/40 hover:bg-violet-500/10 transition-all text-center group"
             >
               <span className="text-xl">{emoji}</span>
-              <span className="text-xs text-slate-500 group-hover:text-violet-600 transition-colors leading-snug">{label}</span>
+              <span className="text-xs text-slate-500 group-hover:text-violet-300 transition-colors leading-snug">{label}</span>
             </button>
           ))}
         </div>
