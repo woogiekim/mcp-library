@@ -7,6 +7,7 @@ import com.mcplibrary.application.UseCaseNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.ExceptionHandler
 import java.time.Instant
 import java.util.UUID
 
@@ -38,6 +39,10 @@ class UseCaseController(
     @ExceptionHandler(UseCaseNotFoundException::class)
     fun handleNotFound(e: UseCaseNotFoundException) =
         ResponseEntity.notFound().build<Unit>()
+
+    @ExceptionHandler(IllegalArgumentException::class)
+    fun handleBadRequest(e: IllegalArgumentException) =
+        ResponseEntity.badRequest().body(mapOf("error" to e.message))
 }
 
 @RestController

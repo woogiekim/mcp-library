@@ -42,15 +42,26 @@ class UseCaseService(
 
     @Transactional(readOnly = true)
     fun search(query: String, limit: Int = 10): List<UseCase> {
-        val vectorResults = vectorSearchPort.search(query, limit)
-            .map { it.chunk.useCaseId }
-            .distinct()
+        val vectorScores = vectorSearchPort.search(query, limit)
+            .groupBy { it.chunk.useCaseId }
+            .mapValues { (_, chunks) -> chunks.maxOf { it.score } }
 
-        val keywordResults = keywordSearchPort.search(query, limit)
+        val keywordIds = keywordSearchPort.search(query, limit)
             .map { it.id }
+            .toSet()
 
-        val merged = (vectorResults + keywordResults).distinct()
-        return merged.mapNotNull { useCaseRepository.findById(it) }
+        val allIds = (vectorScores.keys + keywordIds).distinct()
+
+        return allIds
+            .mapNotNull { id ->
+                val uc = useCaseRepository.findById(id) ?: return@mapNotNull null
+                val vectorScore = vectorScores[id] ?: 0f
+                val keywordBonus = if (id in keywordIds) 2f else 0f
+                uc to (vectorScore + keywordBonus)
+            }
+            .sortedByDescending { (_, score) -> score }
+            .take(limit)
+            .map { (uc, _) -> uc }
     }
 
     @Transactional

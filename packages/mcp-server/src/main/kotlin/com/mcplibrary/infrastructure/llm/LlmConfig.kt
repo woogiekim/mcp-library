@@ -1,6 +1,8 @@
 package com.mcplibrary.infrastructure.llm
 
 import com.mcplibrary.domain.llm.LlmPort
+import com.mcplibrary.domain.llm.LlmRequest
+import com.mcplibrary.domain.llm.LlmResponse
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
@@ -29,6 +31,10 @@ class LlmConfig(private val props: LlmProperties) {
             apiKey = props.apiKey,
             model = props.model,
         )
+        "mock" -> object : LlmPort {
+            override fun complete(request: LlmRequest) =
+                LlmResponse(content = "[MOCK] ${request.userMessage}", provider = "mock")
+        }
         else -> throw IllegalArgumentException(
             "지원하지 않는 LLM provider: '${props.provider}'. " +
             "지원 목록: anthropic, ollama, openai, groq, lmstudio"
