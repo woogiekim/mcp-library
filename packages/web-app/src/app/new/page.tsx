@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
+import ReactMarkdown from 'react-markdown'
 
 interface Message {
   role: 'user' | 'assistant'
@@ -209,11 +210,15 @@ export default function NewUseCasePage() {
                   <div className={`rounded-2xl px-4 py-3 text-sm leading-relaxed ${
                     msg.role === 'user'
                       ? 'bg-gradient-to-br from-violet-600 to-blue-600 text-white rounded-tr-none shadow-md shadow-violet-900/50'
-                      : 'bg-[#1E2433] text-slate-300 border border-[#2A3042] rounded-tl-none shadow-sm'
+                      : 'bg-[#1E2433] text-slate-300 border border-[#2A3042] rounded-tl-none shadow-sm chat-markdown'
                   }`}>
-                    {msg.content.split('\n').map((line, j, arr) => (
-                      <span key={j}>{line}{j < arr.length - 1 && <br/>}</span>
-                    ))}
+                    {msg.role === 'user' ? (
+                      msg.content.split('\n').map((line, j, arr) => (
+                        <span key={j}>{line}{j < arr.length - 1 && <br/>}</span>
+                      ))
+                    ) : (
+                      <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    )}
                   </div>
                   <span className="text-[10px] mt-1 px-1 text-slate-600">{msg.time}</span>
                 </div>
