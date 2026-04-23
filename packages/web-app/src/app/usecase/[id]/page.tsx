@@ -92,9 +92,10 @@ export default async function UseCaseDetailPage({ params }: Props) {
       </div>
 
       {/* Scenarios */}
-      <section className="space-y-3">
-        <div className="flex items-center gap-2">
-          <h2 className="text-sm font-bold text-slate-300 uppercase tracking-widest">시나리오</h2>
+      <section className="space-y-4">
+        <div className="flex items-center gap-3 pb-3 border-b border-[#2A3042]">
+          <span className="w-1.5 h-4 rounded-full bg-gradient-to-b from-emerald-400 to-cyan-500 shrink-0" />
+          <h2 className="text-sm font-bold text-slate-200 uppercase tracking-widest">시나리오</h2>
           <span className="text-xs text-slate-600">{useCase.scenarios.length}단계</span>
         </div>
         <ol className="space-y-0">
@@ -127,9 +128,10 @@ export default async function UseCaseDetailPage({ params }: Props) {
       </section>
 
       {/* Rules */}
-      <section className="space-y-3">
-        <div className="flex items-center gap-2">
-          <h2 className="text-sm font-bold text-slate-300 uppercase tracking-widest">비즈니스 규칙</h2>
+      <section className="space-y-4">
+        <div className="flex items-center gap-3 pb-3 border-b border-[#2A3042]">
+          <span className="w-1.5 h-4 rounded-full bg-gradient-to-b from-cyan-400 to-blue-500 shrink-0" />
+          <h2 className="text-sm font-bold text-slate-200 uppercase tracking-widest">비즈니스 규칙</h2>
           <span className="text-xs text-slate-600">{useCase.rules.length}개</span>
         </div>
         <ul className="space-y-4">
@@ -149,9 +151,10 @@ export default async function UseCaseDetailPage({ params }: Props) {
 
       {/* Exceptions */}
       {useCase.exceptions.length > 0 && (
-        <section className="space-y-3">
-          <div className="flex items-center gap-2">
-            <h2 className="text-sm font-bold text-slate-300 uppercase tracking-widest">예외 처리</h2>
+        <section className="space-y-4">
+          <div className="flex items-center gap-3 pb-3 border-b border-[#2A3042]">
+            <span className="w-1.5 h-4 rounded-full bg-gradient-to-b from-rose-400 to-orange-500 shrink-0" />
+            <h2 className="text-sm font-bold text-slate-200 uppercase tracking-widest">예외 처리</h2>
             <span className="text-xs text-slate-600">{useCase.exceptions.length}개</span>
           </div>
           <ul className="space-y-4">
