@@ -92,15 +92,18 @@ export default async function UseCaseDetailPage({ params }: Props) {
       </div>
 
       {/* Scenarios */}
-      <section className="space-y-2">
-        <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">시나리오 <span className="font-normal text-slate-600 normal-case tracking-normal">{useCase.scenarios.length}단계</span></h2>
-        <ol className="space-y-2">
+      <section className="border-l-2 border-emerald-500/40 bg-emerald-500/5 rounded-r-xl px-4 py-4 space-y-3">
+        <div className="flex items-center gap-2">
+          <h2 className="text-xs font-bold text-emerald-400 uppercase tracking-widest">시나리오</h2>
+          <span className="text-xs text-slate-600">{useCase.scenarios.length}단계</span>
+        </div>
+        <ol className="space-y-3">
           {useCase.scenarios
             .sort((a, b) => a.stepOrder - b.stepOrder)
             .map((step) => (
-              <li key={step.id} className="flex gap-3 border-l-2 border-emerald-500/40 bg-emerald-500/5 rounded-r-lg px-4 py-3">
-                <span className="text-xs font-bold text-emerald-400 shrink-0 w-4">{step.stepOrder}.</span>
-                <div className="flex-1 space-y-1">
+              <li key={step.id} className="flex gap-3">
+                <span className="text-xs font-bold text-emerald-500/70 shrink-0 w-4 pt-0.5">{step.stepOrder}.</span>
+                <div className="flex-1 space-y-0.5">
                   <p className="text-sm text-slate-300 leading-relaxed">{step.description}</p>
                   {step.expected && (
                     <p className="text-xs text-slate-500">&rarr; {step.expected}</p>
@@ -112,11 +115,14 @@ export default async function UseCaseDetailPage({ params }: Props) {
       </section>
 
       {/* Rules */}
-      <section className="space-y-2">
-        <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">비즈니스 규칙 <span className="font-normal text-slate-600 normal-case tracking-normal">{useCase.rules.length}개</span></h2>
-        <ul className="space-y-2">
+      <section className="border-l-2 border-cyan-500/40 bg-cyan-500/5 rounded-r-xl px-4 py-4 space-y-3">
+        <div className="flex items-center gap-2">
+          <h2 className="text-xs font-bold text-cyan-400 uppercase tracking-widest">비즈니스 규칙</h2>
+          <span className="text-xs text-slate-600">{useCase.rules.length}개</span>
+        </div>
+        <ul className="space-y-3">
           {useCase.rules.map(rule => (
-            <li key={rule.id} className="border-l-2 border-cyan-500/40 bg-cyan-500/5 rounded-r-lg px-4 py-3 space-y-2">
+            <li key={rule.id} className="space-y-1.5">
               <p className="text-sm text-slate-300 leading-relaxed">{rule.description}</p>
               <code className="block bg-[#0D1117]/60 text-cyan-300 rounded px-3 py-2 font-mono text-xs border border-cyan-500/20 overflow-x-auto whitespace-pre-wrap break-all">
                 {rule.constraint}
@@ -128,11 +134,14 @@ export default async function UseCaseDetailPage({ params }: Props) {
 
       {/* Exceptions */}
       {useCase.exceptions.length > 0 && (
-        <section className="space-y-2">
-          <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">예외 처리 <span className="font-normal text-slate-600 normal-case tracking-normal">{useCase.exceptions.length}개</span></h2>
-          <ul className="space-y-2">
+        <section className="border-l-2 border-rose-500/40 bg-rose-500/5 rounded-r-xl px-4 py-4 space-y-3">
+          <div className="flex items-center gap-2">
+            <h2 className="text-xs font-bold text-rose-400 uppercase tracking-widest">예외 처리</h2>
+            <span className="text-xs text-slate-600">{useCase.exceptions.length}개</span>
+          </div>
+          <ul className="space-y-3">
             {useCase.exceptions.map(exc => (
-              <li key={exc.id} className="border-l-2 border-rose-500/40 bg-rose-500/5 rounded-r-lg px-4 py-3 space-y-1">
+              <li key={exc.id} className="space-y-0.5">
                 <p className="text-sm text-slate-300 leading-relaxed">{exc.condition}</p>
                 <p className="text-xs text-rose-400/70">&rarr; {exc.handling}</p>
               </li>
