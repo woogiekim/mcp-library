@@ -67,10 +67,16 @@ export async function POST(req: NextRequest) {
     const raw: string = data.choices?.[0]?.message?.content ?? ''
 
     if (extract) {
-      const jsonMatch = raw.match(/```json\s*([\s\S]*?)```/) ?? raw.match(/(\{[\s\S]*\})/)
-      const jsonStr = jsonMatch ? (jsonMatch[1] ?? jsonMatch[0]) : raw
+      const trimmed = raw.trim()
+      const codeBlock = trimmed.match(/```(?:json)?\s*([\s\S]*?)```/)
+      const candidate = codeBlock ? codeBlock[1].trim() : trimmed
+      const firstBrace = candidate.indexOf('{')
+      const lastBrace = candidate.lastIndexOf('}')
+      const jsonStr = firstBrace !== -1 && lastBrace > firstBrace
+        ? candidate.slice(firstBrace, lastBrace + 1)
+        : candidate
       try {
-        const useCase = JSON.parse(jsonStr.trim())
+        const useCase = JSON.parse(jsonStr)
         return NextResponse.json({ useCase })
       } catch {
         return NextResponse.json({ error: 'JSON 파싱 실패', raw }, { status: 422 })
@@ -78,7 +84,8 @@ export async function POST(req: NextRequest) {
     }
 
     const readyToExtract = raw.includes(READY_TAG)
-    const message = raw.replace(READY_TAG, '').trim()
+    const message = raw.split(READY_TAG).join('').trim()
+    if (!message) return NextResponse.json({ error: 'empty response' }, { status: 502 })
     return NextResponse.json({ message, readyToExtract })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })

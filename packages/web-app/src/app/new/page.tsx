@@ -73,9 +73,11 @@ export default function NewUseCasePage() {
         setStep('extracted')
       } else {
         setStep('chat')
+        setMessages(prev => [...prev, { role: 'assistant', content: '정보가 조금 더 필요합니다. 시나리오나 규칙을 더 자세히 설명해주세요.', time: nowTime() }])
       }
     } catch {
       setStep('chat')
+      setMessages(prev => [...prev, { role: 'assistant', content: '⚠ 추출 중 오류가 발생했습니다. 대화를 계속해주세요.', time: nowTime() }])
     } finally {
       extractingRef.current = false
     }
@@ -101,7 +103,11 @@ export default function NewUseCasePage() {
         if (data.readyToExtract) {
           autoExtract(updated)
         }
+      } else if (data.error) {
+        setMessages(prev => [...prev, { role: 'assistant', content: '⚠ 오류가 발생했습니다. 다시 시도해주세요.', time: nowTime() }])
       }
+    } catch {
+      setMessages(prev => [...prev, { role: 'assistant', content: '⚠ 서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.', time: nowTime() }])
     } finally {
       setLoading(false)
     }
