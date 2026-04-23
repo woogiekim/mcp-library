@@ -40,6 +40,29 @@ function groupByDomain(useCases: UseCase[]): [string, UseCase[]][] {
   return ordered
 }
 
+function CardSkeleton() {
+  return (
+    <div className="rounded-2xl border border-[#2A3042] bg-[#161B27] p-5 h-36 overflow-hidden">
+      <div className="flex items-start justify-between gap-4 h-full">
+        <div className="flex-1 flex flex-col gap-2 min-w-0">
+          <div className="flex items-center gap-2 shrink-0">
+            <div className="shimmer h-5 w-16 rounded-full" />
+            <div className="shimmer h-3 w-8 rounded" />
+          </div>
+          <div className="shimmer h-[22px] w-2/3 rounded-lg shrink-0" />
+          <div className="shimmer h-3 w-1/2 rounded shrink-0" />
+          <div className="mt-auto shimmer h-3 w-14 rounded" />
+        </div>
+        <div className="shrink-0 flex flex-col items-end gap-1">
+          <div className="shimmer h-3 w-12 rounded" />
+          <div className="shimmer h-3 w-10 rounded" />
+          <div className="shimmer h-3 w-8 rounded" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
 interface Props {
   initialUseCases: UseCase[]
 }
@@ -94,8 +117,11 @@ export function LibraryView({ initialUseCases }: Props) {
         </div>
 
         <SearchBar onSearch={handleSearch} />
+      </div>
 
-        {isSearchMode && (
+      {/* Controls row — always same height to prevent layout shift */}
+      <div className="min-h-[36px] flex items-center">
+        {isSearchMode ? (
           <div className="flex items-center gap-2">
             <span className="text-xs text-slate-600">검색어</span>
             <span className="px-2.5 py-0.5 rounded-full bg-violet-500/15 text-violet-300 text-xs font-semibold border border-violet-500/30">
@@ -111,40 +137,37 @@ export function LibraryView({ initialUseCases }: Props) {
               초기화
             </button>
           </div>
-        )}
-      </div>
-
-      {/* Domain filter tabs (list mode only) */}
-      {!isSearchMode && initialUseCases.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() => setActiveDomain(null)}
-            className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
-              activeDomain === null
-                ? 'bg-violet-500/20 text-violet-300 border-violet-500/40'
-                : 'text-slate-500 border-[#2A3042] hover:border-violet-500/30 hover:text-violet-400'
-            }`}
-          >
-            전체 <span className="ml-1 opacity-60">{initialUseCases.length}</span>
-          </button>
-          {grouped.map(([domain, ucs]) => (
+        ) : initialUseCases.length > 0 ? (
+          <div className="flex flex-wrap gap-2">
             <button
-              key={domain}
-              onClick={() => setActiveDomain(activeDomain === domain ? null : domain)}
+              onClick={() => setActiveDomain(null)}
               className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
-                activeDomain === domain
-                  ? getDomainColor(domain)
+                activeDomain === null
+                  ? 'bg-violet-500/20 text-violet-300 border-violet-500/40'
                   : 'text-slate-500 border-[#2A3042] hover:border-violet-500/30 hover:text-violet-400'
               }`}
             >
-              {DOMAIN_LABEL[domain] ?? domain}
-              <span className="ml-1 opacity-60">{ucs.length}</span>
+              전체 <span className="ml-1 opacity-60">{initialUseCases.length}</span>
             </button>
-          ))}
-        </div>
-      )}
+            {grouped.map(([domain, ucs]) => (
+              <button
+                key={domain}
+                onClick={() => setActiveDomain(activeDomain === domain ? null : domain)}
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
+                  activeDomain === domain
+                    ? getDomainColor(domain)
+                    : 'text-slate-500 border-[#2A3042] hover:border-violet-500/30 hover:text-violet-400'
+                }`}
+              >
+                {DOMAIN_LABEL[domain] ?? domain}
+                <span className="ml-1 opacity-60">{ucs.length}</span>
+              </button>
+            ))}
+          </div>
+        ) : null}
+      </div>
 
-      {/* Search skeleton — shown only during active search (user-initiated) */}
+      {/* Search skeleton */}
       {searchLoading && (
         <div className="space-y-8">
           {[1, 2].map(group => (
@@ -155,25 +178,7 @@ export function LibraryView({ initialUseCases }: Props) {
                 <div className="flex-1 h-px bg-[#2A3042]" />
               </div>
               <div className="grid gap-3">
-                {[1, 2, 3].map(i => (
-                  <div key={i} className="rounded-2xl border border-[#2A3042] bg-[#161B27] p-5">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1 space-y-2 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <div className="shimmer h-5 w-16 rounded-full" />
-                          <div className="shimmer h-3 w-8 rounded" />
-                        </div>
-                        <div className="shimmer h-[22px] w-2/3 rounded-lg" />
-                        <div className="shimmer h-3 w-1/2 rounded" />
-                      </div>
-                      <div className="shrink-0 flex flex-col items-end gap-1.5">
-                        <div className="shimmer h-3 w-12 rounded" />
-                        <div className="shimmer h-3 w-10 rounded" />
-                      </div>
-                    </div>
-                    <div className="shimmer h-3 w-14 rounded mt-3" />
-                  </div>
-                ))}
+                {[1, 2, 3].map(i => <CardSkeleton key={i} />)}
               </div>
             </div>
           ))}
