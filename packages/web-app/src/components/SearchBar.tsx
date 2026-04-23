@@ -29,7 +29,7 @@ export function SearchBar({ onSearch }: Props) {
           value={value}
           onChange={e => setValue(e.target.value)}
           placeholder="결제 취소 정책, 회원 등급 기준, 배송 상태 조회..."
-          className="search-input w-full pl-12 pr-36 py-4 rounded-2xl border border-[#2A3042] bg-[#161B27] text-sm text-slate-200 placeholder:text-slate-600 outline-none focus:border-violet-500 focus:ring-4 focus:ring-violet-500/20 transition-all shadow-lg shadow-black/30"
+          className="search-input w-full pl-12 pr-36 py-4 rounded-full border border-[#2A3042] bg-[#161B27] text-sm text-slate-200 placeholder:text-slate-600 outline-none focus:border-violet-500 focus:ring-4 focus:ring-violet-500/20 transition-all shadow-lg shadow-black/30"
         />
 
         <button
