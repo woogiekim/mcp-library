@@ -16,7 +16,7 @@ async function fetchAllUseCases(): Promise<UseCase[]> {
 export default async function HomePage() {
   const useCases = await fetchAllUseCases()
   return (
-    <div className="max-w-2xl mx-auto w-full">
+    <div style={{ maxWidth: '42rem', marginLeft: 'auto', marginRight: 'auto', width: '100%' }}>
       <LibraryView initialUseCases={useCases} />
     </div>
   )
