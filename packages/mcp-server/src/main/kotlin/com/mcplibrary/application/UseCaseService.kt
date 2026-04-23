@@ -42,23 +42,17 @@ class UseCaseService(
 
     @Transactional(readOnly = true)
     fun search(query: String, limit: Int = 10): List<UseCase> {
+        // 키워드 검색이 필터 역할 — 매칭되지 않는 항목은 벡터 점수와 무관하게 제외
+        val keywordResults = keywordSearchPort.search(query, limit * 2)
+        if (keywordResults.isEmpty()) return emptyList()
+
+        // 벡터 점수는 키워드 매칭된 항목의 재정렬에만 사용
         val vectorScores = vectorSearchPort.search(query, limit)
             .groupBy { it.chunk.useCaseId }
             .mapValues { (_, chunks) -> chunks.maxOf { it.score } }
 
-        val keywordIds = keywordSearchPort.search(query, limit)
-            .map { it.id }
-            .toSet()
-
-        val allIds = (vectorScores.keys + keywordIds).distinct()
-
-        return allIds
-            .mapNotNull { id ->
-                val uc = useCaseRepository.findById(id) ?: return@mapNotNull null
-                val vectorScore = vectorScores[id] ?: 0f
-                val keywordBonus = if (id in keywordIds) 2f else 0f
-                uc to (vectorScore + keywordBonus)
-            }
+        return keywordResults
+            .map { uc -> uc to (vectorScores[uc.id] ?: 0f) }
             .sortedByDescending { (_, score) -> score }
             .take(limit)
             .map { (uc, _) -> uc }
