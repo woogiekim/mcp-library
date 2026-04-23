@@ -69,7 +69,13 @@ export default function NewUseCasePage() {
       })
       const data = await res.json()
       if (data.useCase) {
-        setExtracted(data.useCase)
+        const uc = data.useCase
+        setExtracted({
+          ...uc,
+          scenarios:  Array.isArray(uc.scenarios)  ? uc.scenarios  : [],
+          rules:      Array.isArray(uc.rules)       ? uc.rules      : [],
+          exceptions: Array.isArray(uc.exceptions)  ? uc.exceptions : [],
+        })
         setStep('extracted')
       } else {
         setStep('chat')
@@ -119,7 +125,7 @@ export default function NewUseCasePage() {
     try {
       const payload = {
         ...extracted,
-        scenarios: extracted.scenarios.map(s => ({ ...s, expected: s.expected ?? undefined })),
+        scenarios: (extracted.scenarios ?? []).map(s => ({ ...s, expected: s.expected ?? undefined })),
         exceptions: extracted.exceptions ?? [],
       }
       const res = await fetch('/api/usecases', {
