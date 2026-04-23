@@ -92,23 +92,18 @@ export default async function UseCaseDetailPage({ params }: Props) {
       </div>
 
       {/* Scenarios */}
-      <section className="rounded-2xl border border-[#2A3042] bg-[#161B27] overflow-hidden shadow-sm">
-        <div className="flex items-center gap-2 px-6 py-4 border-b border-[#2A3042] bg-[#1E2433]">
-          <span className="w-5 h-5 rounded-lg bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center shrink-0">
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-              <path d="M2 5.5L4 7.5L8 3" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </span>
+      <section className="space-y-3">
+        <div className="flex items-center gap-2">
           <h2 className="text-xs font-bold text-slate-400 uppercase tracking-widest">시나리오</h2>
-          <span className="ml-auto text-xs text-slate-600">{useCase.scenarios.length}단계</span>
+          <span className="text-xs text-slate-600">{useCase.scenarios.length}단계</span>
         </div>
-        <ol className="p-6 space-y-0">
+        <ol className="space-y-0">
           {useCase.scenarios
             .sort((a, b) => a.stepOrder - b.stepOrder)
             .map((step, idx, arr) => (
               <li key={step.id} className="relative flex gap-4">
                 <div className="flex flex-col items-center">
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center text-white text-[11px] font-bold shadow-sm shrink-0 z-10">
+                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center text-white text-[11px] font-bold shrink-0 z-10">
                     {step.stepOrder}
                   </div>
                   {idx < arr.length - 1 && (
@@ -132,22 +127,15 @@ export default async function UseCaseDetailPage({ params }: Props) {
       </section>
 
       {/* Rules */}
-      <section className="rounded-2xl border border-[#2A3042] bg-[#161B27] overflow-hidden shadow-sm">
-        <div className="flex items-center gap-2 px-6 py-4 border-b border-[#2A3042] bg-[#1E2433]">
-          <span className="w-5 h-5 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shrink-0">
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-              <rect x="1.5" y="2" width="7" height="1.2" rx="0.6" fill="white"/>
-              <rect x="1.5" y="4.4" width="5" height="1.2" rx="0.6" fill="white"/>
-              <rect x="1.5" y="6.8" width="6" height="1.2" rx="0.6" fill="white"/>
-            </svg>
-          </span>
+      <section className="space-y-3">
+        <div className="flex items-center gap-2">
           <h2 className="text-xs font-bold text-slate-400 uppercase tracking-widest">비즈니스 규칙</h2>
-          <span className="ml-auto text-xs text-slate-600">{useCase.rules.length}개</span>
+          <span className="text-xs text-slate-600">{useCase.rules.length}개</span>
         </div>
-        <ul className="divide-y divide-[#2A3042]">
+        <ul className="space-y-4">
           {useCase.rules.map(rule => (
-            <li key={rule.id} className="flex gap-4 px-6 py-5">
-              <div className="w-0.5 shrink-0 rounded-full bg-gradient-to-b from-cyan-400 to-blue-500 self-stretch" />
+            <li key={rule.id} className="flex gap-3">
+              <div className="w-0.5 shrink-0 rounded-full bg-gradient-to-b from-cyan-400 to-blue-500 self-stretch mt-1" />
               <div className="flex-1 space-y-2">
                 <p className="text-sm text-slate-300 leading-relaxed">{rule.description}</p>
                 <code className="block bg-[#0D1117] text-cyan-300 rounded-lg px-3 py-2 font-mono text-xs leading-relaxed border border-cyan-500/20 overflow-x-auto whitespace-pre-wrap break-all">
@@ -161,21 +149,15 @@ export default async function UseCaseDetailPage({ params }: Props) {
 
       {/* Exceptions */}
       {useCase.exceptions.length > 0 && (
-        <section className="rounded-2xl border border-[#2A3042] bg-[#161B27] overflow-hidden shadow-sm">
-          <div className="flex items-center gap-2 px-6 py-4 border-b border-[#2A3042] bg-[#1E2433]">
-            <span className="w-5 h-5 rounded-lg bg-gradient-to-br from-rose-400 to-orange-500 flex items-center justify-center shrink-0">
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                <path d="M5 1.5L8.5 7.5H1.5L5 1.5Z" stroke="white" strokeWidth="1.2" strokeLinejoin="round"/>
-                <path d="M5 4v1.5" stroke="white" strokeWidth="1.2" strokeLinecap="round"/>
-              </svg>
-            </span>
+        <section className="space-y-3">
+          <div className="flex items-center gap-2">
             <h2 className="text-xs font-bold text-slate-400 uppercase tracking-widest">예외 처리</h2>
-            <span className="ml-auto text-xs text-slate-600">{useCase.exceptions.length}개</span>
+            <span className="text-xs text-slate-600">{useCase.exceptions.length}개</span>
           </div>
-          <ul className="divide-y divide-[#2A3042]">
+          <ul className="space-y-4">
             {useCase.exceptions.map(exc => (
-              <li key={exc.id} className="flex gap-4 px-6 py-5">
-                <div className="w-0.5 shrink-0 rounded-full bg-gradient-to-b from-rose-400 to-orange-500 self-stretch" />
+              <li key={exc.id} className="flex gap-3">
+                <div className="w-0.5 shrink-0 rounded-full bg-gradient-to-b from-rose-400 to-orange-500 self-stretch mt-1" />
                 <div className="flex-1 space-y-1.5">
                   <p className="text-sm text-slate-300 leading-relaxed">{exc.condition}</p>
                   <p className="text-xs text-slate-500">
