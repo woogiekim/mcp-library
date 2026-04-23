@@ -29,7 +29,7 @@ export function UseCaseCard({ useCase }: Props) {
   return (
     <Link
       href={`/usecase/${useCase.id}`}
-      className={`group block rounded-2xl border border-[#2A3042] bg-[#161B27] p-5 shadow-sm transition-all duration-200 card-hover hover:border-violet-500/40 hover:shadow-lg h-36 overflow-hidden ${style.glow}`}
+      className={`group w-full block rounded-2xl border border-[#2A3042] bg-[#161B27] p-5 shadow-sm transition-all duration-200 card-hover hover:border-violet-500/40 hover:shadow-lg h-36 overflow-hidden ${style.glow}`}
     >
       <div className="flex items-start justify-between gap-4 h-full">
         <div className="flex-1 flex flex-col gap-2 min-w-0 h-full">

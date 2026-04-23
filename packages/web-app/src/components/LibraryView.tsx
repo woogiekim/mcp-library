@@ -42,7 +42,7 @@ function groupByDomain(useCases: UseCase[]): [string, UseCase[]][] {
 
 function CardSkeleton() {
   return (
-    <div className="rounded-2xl border border-[#2A3042] bg-[#161B27] p-5 h-36 overflow-hidden">
+    <div className="w-full rounded-2xl border border-[#2A3042] bg-[#161B27] p-5 h-36 overflow-hidden">
       <div className="flex items-start justify-between gap-4 h-full">
         <div className="flex-1 flex flex-col gap-2 min-w-0">
           <div className="flex items-center gap-2 shrink-0">
@@ -100,7 +100,7 @@ export function LibraryView({ initialUseCases }: Props) {
     : (activeDomain ? grouped.filter(([d]) => d === activeDomain) : grouped)
 
   return (
-    <div className="space-y-6 max-w-2xl mx-auto">
+    <div className="w-full max-w-2xl mx-auto space-y-6">
       {/* Header */}
       <div className="pt-8 pb-2 space-y-4">
         <div className="space-y-1">
@@ -177,7 +177,7 @@ export function LibraryView({ initialUseCases }: Props) {
                 <div className="shimmer h-3 w-6 rounded" />
                 <div className="flex-1 h-px bg-[#2A3042]" />
               </div>
-              <div className="grid gap-3">
+              <div className="grid grid-cols-1 gap-3 w-full">
                 {[1, 2, 3].map(i => <CardSkeleton key={i} />)}
               </div>
             </div>
@@ -189,7 +189,7 @@ export function LibraryView({ initialUseCases }: Props) {
       {!searchLoading && displayGroups.length > 0 && (
         <div className="space-y-8">
           {displayGroups.map(([domain, ucs]) => (
-            <section key={domain}>
+            <section key={domain} className="w-full">
               <div className="flex items-center gap-3 mb-3">
                 <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${getDomainColor(domain)}`}>
                   {DOMAIN_LABEL[domain] ?? domain}
@@ -197,7 +197,7 @@ export function LibraryView({ initialUseCases }: Props) {
                 <span className="text-xs text-slate-600">{ucs.length}개</span>
                 <div className="flex-1 h-px bg-[#2A3042]" />
               </div>
-              <div className="grid gap-3">
+              <div className="grid grid-cols-1 gap-3 w-full">
                 {ucs.map(uc => (
                   <UseCaseCard key={uc.id} useCase={uc} />
                 ))}
