@@ -47,7 +47,7 @@ export default async function UseCaseDetailPage({ params }: Props) {
           </svg>
         </div>
         <p className="text-slate-400 font-medium">UseCase를 찾을 수 없습니다</p>
-        <Link href="/usecases" className="inline-block text-sm text-violet-400 hover:underline">← 목록으로 돌아가기</Link>
+        <Link href="/" className="inline-block text-sm text-violet-400 hover:underline">← 목록으로 돌아가기</Link>
       </div>
     )
   }
@@ -59,7 +59,7 @@ export default async function UseCaseDetailPage({ params }: Props) {
       {/* Navigation */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Link href="/usecases" className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-violet-400 transition-colors">
+          <Link href="/" className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-violet-400 transition-colors">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M9 11L5 7l4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
