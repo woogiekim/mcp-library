@@ -83,7 +83,7 @@ export default function HomePage() {
 
       {/* Loading */}
       {loading && (
-        <div className="space-y-3 max-w-2xl mx-auto">
+        <div className="space-y-3">
           {[1, 2, 3].map(i => (
             <div key={i} className="rounded-2xl border border-[#2A3042] bg-[#161B27] p-5 space-y-3">
               <div className="flex gap-2">
