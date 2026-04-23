@@ -100,7 +100,7 @@ export function LibraryView({ initialUseCases }: Props) {
     : (activeDomain ? grouped.filter(([d]) => d === activeDomain) : grouped)
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-2xl mx-auto">
       {/* Header */}
       <div className="pt-8 pb-2 space-y-4">
         <div className="space-y-1">
