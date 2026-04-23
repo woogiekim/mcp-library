@@ -5,6 +5,37 @@ import { SearchBar } from '@/components/SearchBar'
 import { UseCaseCard } from '@/components/UseCaseCard'
 import type { UseCase } from '@mcp-library/types'
 
+const DOMAIN_ORDER = ['order', 'payment', 'member', 'review', 'coupon', 'settlement']
+const DOMAIN_LABEL: Record<string, string> = {
+  order: '주문', payment: '결제', member: '회원',
+  review: '리뷰', coupon: '쿠폰', settlement: '정산',
+}
+const DOMAIN_COLOR: Record<string, string> = {
+  order:      'text-violet-400 border-violet-500/30 bg-violet-500/10',
+  payment:    'text-rose-400 border-rose-500/30 bg-rose-500/10',
+  member:     'text-blue-400 border-blue-500/30 bg-blue-500/10',
+  review:     'text-emerald-400 border-emerald-500/30 bg-emerald-500/10',
+  coupon:     'text-amber-400 border-amber-500/30 bg-amber-500/10',
+  settlement: 'text-cyan-400 border-cyan-500/30 bg-cyan-500/10',
+}
+
+function groupByDomain(useCases: UseCase[]): [string, UseCase[]][] {
+  const map = new Map<string, UseCase[]>()
+  for (const uc of useCases) {
+    const d = uc.domain.toLowerCase()
+    if (!map.has(d)) map.set(d, [])
+    map.get(d)!.push(uc)
+  }
+  const ordered: [string, UseCase[]][] = []
+  for (const d of DOMAIN_ORDER) {
+    if (map.has(d)) ordered.push([d, map.get(d)!])
+  }
+  for (const [d, ucs] of map) {
+    if (!DOMAIN_ORDER.includes(d)) ordered.push([d, ucs])
+  }
+  return ordered
+}
+
 export default function HomePage() {
   const [results, setResults] = useState<UseCase[]>([])
   const [loading, setLoading] = useState(false)
@@ -68,7 +99,7 @@ export default function HomePage() {
 
       {/* Results */}
       {!loading && results.length > 0 && (
-        <div className="space-y-3">
+        <div className="space-y-6">
           <div className="flex items-center gap-2">
             <span className="text-xs font-medium text-slate-600">검색어</span>
             <span className="px-2.5 py-0.5 rounded-full bg-violet-500/15 text-violet-300 text-xs font-semibold border border-violet-500/30">
@@ -77,11 +108,22 @@ export default function HomePage() {
             <span className="text-xs text-slate-600">— {results.length}개 결과</span>
           </div>
 
-          <div className="grid gap-3">
-            {results.map(uc => (
-              <UseCaseCard key={uc.id} useCase={uc} />
-            ))}
-          </div>
+          {groupByDomain(results).map(([domain, ucs]) => (
+            <section key={domain}>
+              <div className="flex items-center gap-3 mb-3">
+                <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${DOMAIN_COLOR[domain] ?? 'text-slate-400 border-slate-500/30 bg-slate-500/10'}`}>
+                  {DOMAIN_LABEL[domain] ?? domain}
+                </span>
+                <span className="text-xs text-slate-600">{ucs.length}개</span>
+                <div className="flex-1 h-px bg-[#2A3042]" />
+              </div>
+              <div className="grid gap-3">
+                {ucs.map(uc => (
+                  <UseCaseCard key={uc.id} useCase={uc} />
+                ))}
+              </div>
+            </section>
+          ))}
         </div>
       )}
 

@@ -32,6 +32,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </a>
               <div className="w-px h-3 bg-[#2A3042] mx-1" />
               <a
+                href="/usecases"
+                className="px-3 py-1.5 text-xs font-medium text-slate-400 hover:text-violet-400 hover:bg-violet-500/10 rounded-md transition-all"
+              >
+                목록
+              </a>
+              <div className="w-px h-3 bg-[#2A3042] mx-1" />
+              <a
                 href="/new"
                 className="px-3 py-1.5 text-xs font-medium text-slate-400 hover:text-cyan-400 hover:bg-cyan-500/10 rounded-md transition-all"
               >
