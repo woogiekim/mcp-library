@@ -50,6 +50,17 @@ export default function NewUseCasePage() {
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
+  function resetPage() {
+    setMessages([{ role: 'assistant', content: GREETING, time: nowTime() }])
+    setInput('')
+    setChatLoading(false)
+    setExtracting(false)
+    setExtracted(null)
+    setSaving(false)
+    setSavedId(null)
+    if (inputRef.current) inputRef.current.style.height = '42px'
+  }
+
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, chatLoading])
@@ -278,10 +289,11 @@ export default function NewUseCasePage() {
                   className="flex-1 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-emerald-500 to-cyan-500 text-white text-center shadow-sm shadow-emerald-900/50">
                   상세 보기
                 </Link>
-                <Link href="/new"
+                <button
+                  onClick={resetPage}
                   className="flex-1 py-2.5 rounded-xl text-xs font-bold border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 transition-colors text-center">
                   새 UseCase
-                </Link>
+                </button>
               </div>
               <Link href="/" className="mt-3 text-xs text-slate-600 hover:text-slate-400 transition-colors">홈으로</Link>
             </div>
