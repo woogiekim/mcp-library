@@ -71,26 +71,23 @@ export default async function UseCaseDetailPage({ params }: Props) {
         <DeleteButton id={useCase.id} />
       </div>
 
-      {/* Header card */}
-      <div className="rounded-2xl border border-[#2A3042] bg-[#161B27] overflow-hidden shadow-sm">
-        <div className={`h-1 bg-gradient-to-r ${bar}`} />
-        <div className="p-6 space-y-3">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className={`domain-chip ${chip}`}>{useCase.domain}</span>
-            <span className="text-xs font-mono text-slate-500 bg-[#1E2433] px-2 py-0.5 rounded-md border border-[#2A3042]">
-              v{useCase.version}
-            </span>
-          </div>
-          <h1 className="text-2xl font-black tracking-tight text-slate-100 leading-tight">
-            {useCase.title}
-          </h1>
-          <div className="flex items-center gap-4 text-xs text-slate-500 pt-1">
-            <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />{useCase.scenarios.length} 시나리오</span>
-            <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />{useCase.rules.length} 규칙</span>
-            {useCase.exceptions.length > 0 && (
-              <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-rose-400" />{useCase.exceptions.length} 예외</span>
-            )}
-          </div>
+      {/* Header */}
+      <div className="space-y-3 pb-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className={`domain-chip ${chip}`}>{useCase.domain}</span>
+          <span className="text-xs font-mono text-slate-500 bg-[#1E2433] px-2 py-0.5 rounded-md border border-[#2A3042]">
+            v{useCase.version}
+          </span>
+        </div>
+        <h1 className="text-2xl font-black tracking-tight text-slate-100 leading-tight">
+          {useCase.title}
+        </h1>
+        <div className="flex items-center gap-4 text-xs text-slate-500">
+          <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />{useCase.scenarios.length} 시나리오</span>
+          <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />{useCase.rules.length} 규칙</span>
+          {useCase.exceptions.length > 0 && (
+            <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-rose-400" />{useCase.exceptions.length} 예외</span>
+          )}
         </div>
       </div>
 
