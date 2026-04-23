@@ -216,10 +216,10 @@ export default function NewUseCasePage() {
                     <path d="M5 1L8.73 3.25V7.75L5 10L1.27 7.75V3.25L5 1Z" fill="white" fillOpacity="0.9"/>
                   </svg>
                 </div>
-                <div className="bg-[#1E2433] border border-[#2A3042] rounded-2xl rounded-tl-none px-4 py-3 shadow-sm flex items-center gap-1.5">
+                <div className="bg-[#1E2433] border border-[#2A3042] rounded-2xl rounded-tl-none px-4 py-3.5 shadow-sm flex items-center gap-1.5">
                   {[0, 1, 2].map(i => (
-                    <div key={i} className="w-2 h-2 rounded-full bg-violet-400"
-                      style={{ animation: `bounce 1s ease-in-out ${i * 0.15}s infinite` }} />
+                    <div key={i} className="w-2 h-2 rounded-full bg-violet-400 typing-dot"
+                      style={{ animationDelay: `${i * 0.2}s` }} />
                   ))}
                 </div>
               </div>
@@ -396,6 +396,42 @@ export default function NewUseCasePage() {
               </button>
             </>
 
+          ) : extracting ? (
+            /* 추출 중 — 스켈레톤 */
+            <div className="space-y-3 animate-pulse">
+              <div className="rounded-2xl border border-violet-500/25 bg-violet-500/5 p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <svg className="w-3.5 h-3.5 text-violet-400 animate-spin" viewBox="0 0 24 24" fill="none">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                  </svg>
+                  <span className="text-[10px] text-violet-400 font-semibold tracking-wider uppercase">UseCase 수집 중...</span>
+                </div>
+                <div className="h-4 w-20 rounded-full bg-violet-500/20 mb-3" />
+                <div className="h-4 w-3/4 rounded bg-[#2A3042]" />
+                <div className="h-3 w-1/3 rounded bg-[#2A3042] mt-2" />
+              </div>
+              <div className="rounded-2xl border border-[#2A3042] bg-[#161B27] p-5">
+                <div className="h-2.5 w-16 rounded bg-[#2A3042] mb-4" />
+                <div className="space-y-3">
+                  {[1, 2, 3].map(i => (
+                    <div key={i} className="flex gap-3 items-start">
+                      <div className="w-5 h-5 rounded-full bg-[#2A3042] shrink-0" />
+                      <div className="flex-1 space-y-1.5">
+                        <div className="h-3 rounded bg-[#2A3042]" />
+                        <div className="h-2.5 w-2/3 rounded bg-[#2A3042]" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="rounded-2xl border border-[#2A3042] bg-[#161B27] p-5">
+                <div className="h-2.5 w-20 rounded bg-[#2A3042] mb-3" />
+                <div className="h-3 w-full rounded bg-[#2A3042]" />
+                <div className="h-8 w-full rounded-lg bg-[#0D1117] mt-2" />
+              </div>
+            </div>
+
           ) : (
             /* 아직 추출된 내용 없음 */
             <div className="flex-1 flex flex-col items-center justify-center rounded-2xl border border-dashed border-[#2A3042] bg-[#161B27] p-8 text-center">
@@ -416,20 +452,11 @@ export default function NewUseCasePage() {
                   <circle cx="36" cy="36" r="6" fill="url(#hg2)"/>
                 </svg>
               </div>
-              {extracting ? (
-                <>
-                  <p className="text-sm font-semibold text-violet-400">분석 중...</p>
-                  <p className="text-xs text-slate-600 mt-1">대화 내용에서 UseCase를 도출하고 있습니다</p>
-                </>
-              ) : (
-                <>
-                  <p className="text-sm font-semibold text-slate-500">대화를 시작해보세요</p>
-                  <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                    AI와 대화하면 이 패널에<br/>
-                    <span className="text-violet-400 font-medium">UseCase가 자동으로 채워집니다</span>
-                  </p>
-                </>
-              )}
+              <p className="text-sm font-semibold text-slate-500">대화를 시작해보세요</p>
+              <p className="text-xs text-slate-600 mt-2 leading-relaxed">
+                AI와 대화하면 이 패널에<br/>
+                <span className="text-violet-400 font-medium">UseCase가 자동으로 채워집니다</span>
+              </p>
             </div>
           )}
         </div>
