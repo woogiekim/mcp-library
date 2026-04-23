@@ -62,10 +62,9 @@ body {
   }
 }
 
-/* Dark scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #0D1117; }
-::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #8B5CF6, #22D3EE); border-radius: 3px; }
+/* Scrollbar hidden */
+::-webkit-scrollbar { display: none; }
+* { scrollbar-width: none; }
 
 /* Search input glow animation */
 @keyframes glow-pulse {

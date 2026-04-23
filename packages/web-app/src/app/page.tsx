@@ -25,23 +25,22 @@ export default function HomePage() {
   }
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-8">
       {/* Hero */}
-      <div className="text-center space-y-4 pt-6 pb-2">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-xs font-medium text-violet-400 mb-2">
+      <div className="text-center space-y-5 pt-14 pb-2">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-xs font-medium text-violet-400">
           <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
           MCP · UseCase-Grounded AI
         </div>
 
-        <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-slate-100 leading-tight">
+        <h1 className="text-5xl sm:text-6xl font-black tracking-tight text-slate-100 leading-[1.1]">
           도메인 지식을{' '}
           <span className="text-gradient-violet">자연어</span>
           로 검색
         </h1>
 
-        <p className="text-slate-500 text-base max-w-xl mx-auto leading-relaxed">
+        <p className="text-slate-500 text-sm max-w-lg mx-auto leading-relaxed">
           팀이 정의한 UseCase를 기반으로 AI가 정확하게 답변합니다.
-          <br />
           규칙과 시나리오에 근거한 신뢰할 수 있는 지식 검색.
         </p>
       </div>
@@ -104,21 +103,26 @@ export default function HomePage() {
 
       {/* Initial empty state */}
       {!hasSearched && (
-        <div className="grid grid-cols-3 gap-3 max-w-lg mx-auto pt-4">
-          {[
-            { label: '결제 취소 정책', emoji: '💳' },
-            { label: '회원 등급 기준', emoji: '🏅' },
-            { label: '주문 취소 조건', emoji: '📦' },
-          ].map(({ label, emoji }) => (
-            <button
-              key={label}
-              onClick={() => handleSearch(label)}
-              className="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-[#2A3042] bg-[#161B27] hover:border-violet-500/40 hover:bg-violet-500/10 transition-all text-center group"
-            >
-              <span className="text-xl">{emoji}</span>
-              <span className="text-xs text-slate-500 group-hover:text-violet-300 transition-colors leading-snug">{label}</span>
-            </button>
-          ))}
+        <div className="space-y-3 max-w-xl mx-auto">
+          <p className="text-center text-[10px] text-slate-600 uppercase tracking-widest font-semibold">검색 예시</p>
+          <div className="flex flex-wrap gap-2 justify-center">
+            {[
+              { label: '결제 취소 정책', emoji: '💳' },
+              { label: '회원 등급 기준', emoji: '🏅' },
+              { label: '주문 취소 조건', emoji: '📦' },
+              { label: '쿠폰 적용 규칙', emoji: '🎟' },
+              { label: '리뷰 작성 정책', emoji: '⭐' },
+            ].map(({ label, emoji }) => (
+              <button
+                key={label}
+                onClick={() => handleSearch(label)}
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-[#2A3042] bg-[#161B27] hover:border-violet-500/50 hover:bg-violet-500/10 hover:text-violet-300 transition-all text-xs text-slate-500 group"
+              >
+                <span>{emoji}</span>
+                <span>{label}</span>
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </div>

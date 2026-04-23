@@ -49,7 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </main>
 
-        <footer className="mt-20 border-t border-[#2A3042] py-8">
+        <footer className="mt-6 border-t border-[#2A3042] py-3">
           <div className="max-w-5xl mx-auto px-6 flex items-center justify-between text-xs text-slate-500">
             <span>MCP UseCase Platform</span>
             <span className="text-gradient-cyan font-medium">Powered by MCP · Ollama · Qdrant</span>
