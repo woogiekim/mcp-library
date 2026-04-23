@@ -154,30 +154,38 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* Search loading skeleton */}
-      {searchLoading && (
-        <div className="space-y-3">
-          {[1, 2, 3].map(i => (
-            <div key={i} className="rounded-2xl border border-[#2A3042] bg-[#161B27] p-5 space-y-3">
-              <div className="flex gap-2">
-                <div className="shimmer h-5 w-16 rounded-full" />
-                <div className="shimmer h-5 w-12 rounded-full" />
+      {/* Loading skeleton — mirrors UseCaseCard layout exactly */}
+      {(searchLoading || (listLoading && !isSearchMode)) && (
+        <div className="space-y-8">
+          {[1, 2].map(group => (
+            <div key={group}>
+              {/* domain header row */}
+              <div className="flex items-center gap-3 mb-3">
+                <div className="shimmer h-5 w-14 rounded-full" />
+                <div className="shimmer h-3 w-6 rounded" />
+                <div className="flex-1 h-px bg-[#2A3042]" />
               </div>
-              <div className="shimmer h-4 w-3/4 rounded-lg" />
-              <div className="shimmer h-3 w-1/2 rounded-lg" />
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* List loading skeleton */}
-      {listLoading && !isSearchMode && (
-        <div className="space-y-3">
-          {[1, 2, 3].map(i => (
-            <div key={i} className="rounded-2xl border border-[#2A3042] bg-[#161B27] p-5 space-y-3">
-              <div className="shimmer h-4 w-16 rounded-full" />
-              <div className="shimmer h-4 w-3/4 rounded-lg" />
-              <div className="shimmer h-3 w-1/2 rounded-lg" />
+              <div className="grid gap-3">
+                {[1, 2, 3].map(i => (
+                  <div key={i} className="rounded-2xl border border-[#2A3042] bg-[#161B27] p-5">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1 space-y-2 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <div className="shimmer h-5 w-16 rounded-full" />
+                          <div className="shimmer h-3 w-8 rounded" />
+                        </div>
+                        <div className="shimmer h-[22px] w-2/3 rounded-lg" />
+                        <div className="shimmer h-3 w-1/2 rounded" />
+                      </div>
+                      <div className="shrink-0 flex flex-col items-end gap-1.5">
+                        <div className="shimmer h-3 w-12 rounded" />
+                        <div className="shimmer h-3 w-10 rounded" />
+                      </div>
+                    </div>
+                    <div className="shimmer h-3 w-14 rounded mt-3" />
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
         </div>
