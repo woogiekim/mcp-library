@@ -55,7 +55,7 @@ export default async function UseCaseDetailPage({ params }: Props) {
   const { chip, bar } = getDomainColor(useCase.domain)
 
   return (
-    <div className="max-w-2xl mx-auto w-full space-y-6">
+    <div className="max-w-2xl mx-auto w-full space-y-10">
       {/* Navigation */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
