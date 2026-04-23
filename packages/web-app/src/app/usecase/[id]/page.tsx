@@ -147,17 +147,15 @@ export default async function UseCaseDetailPage({ params }: Props) {
           <h2 className="text-xs font-bold text-slate-400 uppercase tracking-widest">비즈니스 규칙</h2>
           <span className="ml-auto text-xs text-slate-600">{useCase.rules.length}개</span>
         </div>
-        <ul className="p-6 space-y-3">
+        <ul className="divide-y divide-[#2A3042]">
           {useCase.rules.map(rule => (
-            <li key={rule.id} className="rounded-xl bg-[#1E2433] border border-[#2A3042] overflow-hidden">
-              <div className="flex">
-                <div className="w-1 shrink-0 bg-gradient-to-b from-cyan-400 to-blue-500" />
-                <div className="flex-1 p-4 space-y-2">
-                  <p className="text-sm text-slate-300 leading-relaxed">{rule.description}</p>
-                  <code className="block bg-[#0D1117] text-cyan-300 rounded-lg px-3 py-2 font-mono text-xs leading-relaxed border border-cyan-500/20 overflow-x-auto whitespace-pre-wrap break-all">
-                    {rule.constraint}
-                  </code>
-                </div>
+            <li key={rule.id} className="flex gap-4 px-6 py-5">
+              <div className="w-0.5 shrink-0 rounded-full bg-gradient-to-b from-cyan-400 to-blue-500 self-stretch" />
+              <div className="flex-1 space-y-2">
+                <p className="text-sm text-slate-300 leading-relaxed">{rule.description}</p>
+                <code className="block bg-[#0D1117] text-cyan-300 rounded-lg px-3 py-2 font-mono text-xs leading-relaxed border border-cyan-500/20 overflow-x-auto whitespace-pre-wrap break-all">
+                  {rule.constraint}
+                </code>
               </div>
             </li>
           ))}
@@ -177,20 +175,15 @@ export default async function UseCaseDetailPage({ params }: Props) {
             <h2 className="text-xs font-bold text-slate-400 uppercase tracking-widest">예외 처리</h2>
             <span className="ml-auto text-xs text-slate-600">{useCase.exceptions.length}개</span>
           </div>
-          <ul className="p-6 space-y-3">
+          <ul className="divide-y divide-[#2A3042]">
             {useCase.exceptions.map(exc => (
-              <li key={exc.id} className="rounded-xl bg-[#1E2433] border border-[#2A3042] overflow-hidden">
-                <div className="flex">
-                  <div className="w-1 shrink-0 bg-gradient-to-b from-rose-400 to-orange-500" />
-                  <div className="flex-1 p-4 space-y-2">
-                    <p className="text-xs font-semibold text-rose-400 uppercase tracking-wide">조건</p>
-                    <p className="text-sm text-slate-300 leading-relaxed">{exc.condition}</p>
-                    <div className="pt-1.5 border-t border-[#2A3042]">
-                      <p className="text-xs text-slate-500">
-                        <span className="font-semibold text-slate-400">처리: </span>{exc.handling}
-                      </p>
-                    </div>
-                  </div>
+              <li key={exc.id} className="flex gap-4 px-6 py-5">
+                <div className="w-0.5 shrink-0 rounded-full bg-gradient-to-b from-rose-400 to-orange-500 self-stretch" />
+                <div className="flex-1 space-y-1.5">
+                  <p className="text-sm text-slate-300 leading-relaxed">{exc.condition}</p>
+                  <p className="text-xs text-slate-500">
+                    <span className="font-semibold text-rose-400/70">처리: </span>{exc.handling}
+                  </p>
                 </div>
               </li>
             ))}
