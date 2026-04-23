@@ -50,7 +50,7 @@ export default function NewUseCasePage() {
   const [savedId, setSavedId] = useState('')
   const [step, setStep] = useState<Step>('chat')
   const bottomRef = useRef<HTMLDivElement>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const inputRef = useRef<HTMLTextAreaElement>(null)
   const extractingRef = useRef(false)
 
   useEffect(() => {
@@ -95,6 +95,7 @@ export default function NewUseCasePage() {
     const next = [...messages, userMsg]
     setMessages(next)
     setInput('')
+    if (inputRef.current) inputRef.current.style.height = '42px'
     setLoading(true)
     try {
       const res = await fetch('/api/chat', {
@@ -276,16 +277,26 @@ export default function NewUseCasePage() {
 
           {/* Input area */}
           <div className="shrink-0 px-4 py-3 border-t border-[#2A3042] bg-[#161B27]/95 backdrop-blur-sm">
-            <div className="flex gap-2 items-center">
-              <input
+            <div className="flex gap-2 items-end">
+              <textarea
                 ref={inputRef}
-                type="text"
+                rows={1}
                 value={input}
-                onChange={e => setInput(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && !e.shiftKey && sendMessage()}
-                placeholder="업무 프로세스를 자유롭게 설명하세요..."
+                onChange={e => {
+                  setInput(e.target.value)
+                  e.target.style.height = 'auto'
+                  e.target.style.height = `${Math.min(e.target.scrollHeight, 120)}px`
+                }}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault()
+                    sendMessage()
+                  }
+                }}
+                placeholder="업무 프로세스를 자유롭게 설명하세요... (Shift+Enter로 줄바꿈)"
                 disabled={loading || !isIdle}
-                className="flex-1 text-sm px-4 py-2.5 rounded-xl border border-[#2A3042] focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 outline-none placeholder:text-slate-600 disabled:text-slate-600 bg-[#1E2433] text-slate-200 transition-all"
+                className="flex-1 text-sm px-4 py-2.5 rounded-xl border border-[#2A3042] focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 outline-none placeholder:text-slate-600 disabled:text-slate-600 bg-[#1E2433] text-slate-200 transition-all resize-none overflow-hidden leading-relaxed"
+                style={{ minHeight: '42px', maxHeight: '120px' }}
               />
               <button
                 onClick={sendMessage}
