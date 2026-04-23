@@ -39,7 +39,7 @@ export default async function UseCaseDetailPage({ params }: Props) {
 
   if (!useCase) {
     return (
-      <div style={{ maxWidth: '42rem', marginLeft: 'auto', marginRight: 'auto', width: '100%' }} className="text-center py-24 space-y-4">
+      <div className="w-full text-center py-24 space-y-4">
         <div className="w-16 h-16 rounded-2xl bg-rose-500/10 flex items-center justify-center mx-auto">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-rose-400">
             <circle cx="12" cy="12" r="10"/>
@@ -55,7 +55,7 @@ export default async function UseCaseDetailPage({ params }: Props) {
   const { chip, bar } = getDomainColor(useCase.domain)
 
   return (
-    <div style={{ maxWidth: '42rem', marginLeft: 'auto', marginRight: 'auto', width: '100%' }} className="space-y-6">
+    <div className="w-full space-y-6">
       {/* Navigation */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
