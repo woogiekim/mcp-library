@@ -97,4 +97,14 @@ class KeywordSearchAdapterTest {
         val results = adapter.search("a b c", 10)
         assertTrue(results.isEmpty(), "1자 토큰은 검색에서 무시되어야 한다")
     }
+
+    @Test
+    fun `다중 단어 쿼리는 절반 이상 일치하는 문서만 반환된다`() {
+        // "결제 취소 정책" (3단어) → minMatched=2
+        // "회원 등급 산정"에는 "결제", "취소", "정책" 없음 → 0개 → 제외
+        // "주문 취소"에는 "취소"(+1), "결제"(규칙에 포함, +1) → 2개 → 포함
+        val results = adapter.search("결제 취소 정책", 10)
+        assertTrue(results.none { it.domain.value == "member" },
+            "관련 없는 member 도메인 UseCase는 제외되어야 한다")
+    }
 }
