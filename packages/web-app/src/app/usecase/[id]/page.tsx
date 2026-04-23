@@ -94,7 +94,16 @@ export default async function UseCaseDetailPage({ params }: Props) {
       {/* Scenarios */}
       <section className="space-y-4">
         <div className="flex items-center gap-3 pb-3 border-b border-[#2A3042]">
-          <span className="w-1.5 h-4 rounded-full bg-gradient-to-b from-emerald-400 to-cyan-500 shrink-0" />
+          <span className="w-6 h-6 rounded-lg bg-emerald-500/20 flex items-center justify-center shrink-0">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" className="text-emerald-400">
+              <circle cx="3" cy="3" r="1.5" fill="currentColor"/>
+              <line x1="6" y1="3" x2="12" y2="3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              <circle cx="3" cy="6.5" r="1.5" fill="currentColor"/>
+              <line x1="6" y1="6.5" x2="12" y2="6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              <circle cx="3" cy="10" r="1.5" fill="currentColor"/>
+              <line x1="6" y1="10" x2="12" y2="10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+          </span>
           <h2 className="text-sm font-bold text-slate-200 uppercase tracking-widest">시나리오</h2>
           <span className="text-xs text-slate-600">{useCase.scenarios.length}단계</span>
         </div>
@@ -130,7 +139,14 @@ export default async function UseCaseDetailPage({ params }: Props) {
       {/* Rules */}
       <section className="space-y-4">
         <div className="flex items-center gap-3 pb-3 border-b border-[#2A3042]">
-          <span className="w-1.5 h-4 rounded-full bg-gradient-to-b from-cyan-400 to-blue-500 shrink-0" />
+          <span className="w-6 h-6 rounded-lg bg-cyan-500/20 flex items-center justify-center shrink-0">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" className="text-cyan-400">
+              <rect x="1.5" y="1.5" width="10" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
+              <line x1="4" y1="4.5" x2="9" y2="4.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+              <line x1="4" y1="6.5" x2="9" y2="6.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+              <line x1="4" y1="8.5" x2="7" y2="8.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+            </svg>
+          </span>
           <h2 className="text-sm font-bold text-slate-200 uppercase tracking-widest">비즈니스 규칙</h2>
           <span className="text-xs text-slate-600">{useCase.rules.length}개</span>
         </div>
@@ -153,7 +169,13 @@ export default async function UseCaseDetailPage({ params }: Props) {
       {useCase.exceptions.length > 0 && (
         <section className="space-y-4">
           <div className="flex items-center gap-3 pb-3 border-b border-[#2A3042]">
-            <span className="w-1.5 h-4 rounded-full bg-gradient-to-b from-rose-400 to-orange-500 shrink-0" />
+            <span className="w-6 h-6 rounded-lg bg-rose-500/20 flex items-center justify-center shrink-0">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" className="text-rose-400">
+                <path d="M6.5 1.5L11.5 10.5H1.5L6.5 1.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+                <line x1="6.5" y1="5" x2="6.5" y2="7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                <circle cx="6.5" cy="9" r="0.75" fill="currentColor"/>
+              </svg>
+            </span>
             <h2 className="text-sm font-bold text-slate-200 uppercase tracking-widest">예외 처리</h2>
             <span className="text-xs text-slate-600">{useCase.exceptions.length}개</span>
           </div>
