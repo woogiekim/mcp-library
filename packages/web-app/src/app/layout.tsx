@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
-      <body className="min-h-screen font-sans">
+      <body className="min-h-screen font-sans flex flex-col">
         <header className="sticky top-0 z-50 backdrop-blur-md bg-[#0D1117]/80 border-b border-[#2A3042]/60">
           <div className="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
             <a href="/" className="flex items-center gap-2.5 group">
@@ -45,7 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </header>
 
-        <main className="max-w-5xl mx-auto px-6 py-10">
+        <main className="max-w-5xl mx-auto px-6 py-10 flex-1">
           {children}
         </main>
 

@@ -62,9 +62,6 @@ body {
   }
 }
 
-/* Scrollbar hidden */
-::-webkit-scrollbar { display: none; }
-* { scrollbar-width: none; }
 
 /* Search input glow animation */
 @keyframes glow-pulse {
