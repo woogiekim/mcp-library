@@ -2,29 +2,31 @@
   "name": "@mcp-library/desktop-app",
   "version": "0.1.0",
   "private": true,
+  "main": "dist/electron/main.js",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "tauri:dev": "tauri dev",
-    "tauri:build": "tauri build",
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@mcp-library/mcp-client-core": "*",
-    "@mcp-library/types": "*",
-    "@tauri-apps/api": "^1.6.0",
-    "react": "^18.3.0",
-    "react-dom": "^18.3.0"
+    "dev": "wait-on http://localhost:3000 && electron .",
+    "build": "tsc -p tsconfig.electron.json",
+    "pack": "npm run build && electron-builder",
+    "typecheck": "tsc -p tsconfig.electron.json --noEmit"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.6.0",
-    "@types/react": "^18.3.0",
-    "@types/react-dom": "^18.3.0",
-    "@vitejs/plugin-react": "^4.3.0",
-    "autoprefixer": "^10.4.0",
-    "postcss": "^8.4.0",
-    "tailwindcss": "^3.4.0",
+    "@types/node": "^20.0.0",
+    "electron": "^31.0.0",
+    "electron-builder": "^24.0.0",
     "typescript": "^5.4.0",
-    "vite": "^5.3.0"
+    "wait-on": "^7.0.0"
+  },
+  "build": {
+    "appId": "com.mcp-library.desktop",
+    "productName": "MCP Library",
+    "files": ["dist/**/*"],
+    "extraResources": [
+      { "from": "../web-app/.next/standalone", "to": "web-app", "filter": ["**/*"] },
+      { "from": "../web-app/.next/static", "to": "web-app/.next/static", "filter": ["**/*"] },
+      { "from": "../web-app/public", "to": "web-app/public", "filter": ["**/*"] }
+    ],
+    "mac": { "category": "public.app-category.developer-tools", "target": "dmg" },
+    "win": { "target": "nsis" },
+    "linux": { "target": "AppImage" }
   }
 }
