@@ -30,8 +30,8 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=builder /app/packages/web-app/.next/standalone ./
 COPY --from=prod-deps /app/node_modules ./node_modules
-COPY --from=builder /app/packages/web-app/.next/static ./packages/web-app/.next/static
-COPY --from=builder /app/packages/web-app/public ./packages/web-app/public
+COPY --from=builder /app/packages/web-app/.next/static ./.next/static
+COPY --from=builder /app/packages/web-app/public ./public
 EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
