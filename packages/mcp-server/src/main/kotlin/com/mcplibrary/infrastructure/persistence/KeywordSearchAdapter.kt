@@ -36,11 +36,13 @@ class KeywordSearchAdapter(
             .distinct()
 
     /**
-     * 한국어 형태소 변형을 커버하기 위해 prefix 방식으로 매칭.
-     * "취소가능한지" 검색 시 corpus의 "취소가능" 도 히트.
+     * 정확한 단어 포함 여부를 검사하며, 3자 이상 검색어는 마지막 1자를 뗀 형태도 허용.
+     * "주문취소" → corpus에 "주문취소" 또는 "주문취" 포함 시 매칭.
+     * 기존 2자 prefix 방식은 "주문취소" 검색 시 "주문"만 있는 항목도 히트해 결과가 너무 넓었음.
      */
     private fun termMatches(corpus: String, term: String): Boolean =
-        (2..term.length).any { len -> corpus.contains(term.substring(0, len)) }
+        corpus.contains(term) ||
+        (term.length >= 3 && corpus.contains(term.dropLast(1)))
 
     private fun buildCorpus(uc: UseCase): String = buildString {
         append(uc.domain.value); append(" ")
