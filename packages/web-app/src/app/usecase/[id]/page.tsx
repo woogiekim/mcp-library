@@ -19,20 +19,17 @@ async function fetchUseCase(id: string): Promise<UseCase | null> {
   }
 }
 
-const domainColor: Record<string, { chip: string; bar: string }> = {
-  order:      { chip: 'bg-violet-500/15 text-violet-300 ring-1 ring-violet-500/30',    bar: 'from-violet-400 to-violet-600' },
-  member:     { chip: 'bg-blue-500/15 text-blue-300 ring-1 ring-blue-500/30',          bar: 'from-blue-400 to-blue-600' },
-  review:     { chip: 'bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-500/30', bar: 'from-emerald-400 to-emerald-600' },
-  coupon:     { chip: 'bg-amber-500/15 text-amber-300 ring-1 ring-amber-500/30',       bar: 'from-amber-400 to-amber-600' },
-  settlement: { chip: 'bg-cyan-500/15 text-cyan-300 ring-1 ring-cyan-500/30',          bar: 'from-cyan-400 to-cyan-600' },
-  payment:    { chip: 'bg-rose-500/15 text-rose-300 ring-1 ring-rose-500/30',          bar: 'from-rose-400 to-rose-600' },
+const domainColor: Record<string, string> = {
+  order:      'bg-violet-500/15 text-violet-300 ring-1 ring-violet-500/30',
+  member:     'bg-blue-500/15 text-blue-300 ring-1 ring-blue-500/30',
+  review:     'bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-500/30',
+  coupon:     'bg-amber-500/15 text-amber-300 ring-1 ring-amber-500/30',
+  settlement: 'bg-cyan-500/15 text-cyan-300 ring-1 ring-cyan-500/30',
+  payment:    'bg-rose-500/15 text-rose-300 ring-1 ring-rose-500/30',
 }
 
-function getDomainColor(domain: string) {
-  return domainColor[domain.toLowerCase()] ?? {
-    chip: 'bg-slate-500/15 text-slate-300 ring-1 ring-slate-500/30',
-    bar: 'from-slate-400 to-slate-600',
-  }
+function getDomainChip(domain: string) {
+  return domainColor[domain.toLowerCase()] ?? 'bg-slate-500/15 text-slate-300 ring-1 ring-slate-500/30'
 }
 
 export default async function UseCaseDetailPage({ params }: Props) {
@@ -53,138 +50,91 @@ export default async function UseCaseDetailPage({ params }: Props) {
     )
   }
 
-  const { chip, bar } = getDomainColor(useCase.domain)
+  const chip = getDomainChip(useCase.domain)
 
   return (
-    <div className="max-w-2xl mx-auto w-full space-y-10">
+    <div className="max-w-2xl mx-auto w-full space-y-3">
       {/* Navigation */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-2">
         <BackButton />
         <DeleteButton id={useCase.id} />
       </div>
 
-      {/* Header */}
-      <div className="space-y-3 pb-2">
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className={`domain-chip ${chip}`}>{useCase.domain}</span>
-          <span className="text-xs font-mono text-slate-500 bg-[#1E2433] px-2 py-0.5 rounded-md border border-[#2A3042]">
-            v{useCase.version}
-          </span>
-        </div>
-        <h1 className="text-2xl font-black tracking-tight text-slate-100 leading-tight">
-          {useCase.title}
-        </h1>
-        <div className="flex items-center gap-4 text-xs text-slate-500">
-          <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />{useCase.scenarios.length} 시나리오</span>
-          <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />{useCase.rules.length} 규칙</span>
-          {useCase.exceptions.length > 0 && (
-            <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-rose-400" />{useCase.exceptions.length} 예외</span>
-          )}
+      {/* Header card */}
+      <div className="rounded-2xl border border-[#2A3042] bg-[#161B27] p-5 shadow-sm">
+        <div className="flex items-start justify-between gap-3">
+          <div className="space-y-2 min-w-0">
+            <span className={`domain-chip inline-flex ${chip}`}>{useCase.domain}</span>
+            <h1 className="text-base font-black text-slate-200 leading-snug">{useCase.title}</h1>
+            <span className="text-[10px] font-mono text-slate-600">v{useCase.version}</span>
+          </div>
+          <div className="text-[10px] text-slate-600 text-right shrink-0 space-y-1 pt-1">
+            <div className="flex items-center gap-1 justify-end"><div className="w-2 h-2 rounded-full bg-emerald-400" />{useCase.scenarios.length} 시나리오</div>
+            <div className="flex items-center gap-1 justify-end"><div className="w-2 h-2 rounded-full bg-cyan-400" />{useCase.rules.length} 규칙</div>
+            {useCase.exceptions.length > 0 && (
+              <div className="flex items-center gap-1 justify-end"><div className="w-2 h-2 rounded-full bg-rose-400" />{useCase.exceptions.length} 예외</div>
+            )}
+          </div>
         </div>
       </div>
 
       {/* Scenarios */}
-      <section className="space-y-4">
-        <div className="flex items-center gap-3 pb-3 border-b border-[#2A3042]">
-          <span className="w-6 h-6 rounded-lg bg-emerald-500/20 flex items-center justify-center shrink-0">
-            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" className="text-emerald-400">
-              <circle cx="3" cy="3" r="1.5" fill="currentColor"/>
-              <line x1="6" y1="3" x2="12" y2="3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-              <circle cx="3" cy="6.5" r="1.5" fill="currentColor"/>
-              <line x1="6" y1="6.5" x2="12" y2="6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-              <circle cx="3" cy="10" r="1.5" fill="currentColor"/>
-              <line x1="6" y1="10" x2="12" y2="10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-            </svg>
-          </span>
-          <h2 className="text-sm font-bold text-slate-200 uppercase tracking-widest">시나리오</h2>
-          <span className="text-xs text-slate-600">{useCase.scenarios.length}단계</span>
-        </div>
-        <ol className="space-y-0">
+      <div className="rounded-2xl border border-[#2A3042] bg-[#161B27] p-5 shadow-sm">
+        <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">시나리오</h4>
+        <ol className="space-y-4">
           {useCase.scenarios
             .sort((a, b) => a.stepOrder - b.stepOrder)
-            .map((step, idx, arr) => (
-              <li key={step.id} className="relative flex gap-4">
-                <div className="flex flex-col items-center">
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center text-white text-[11px] font-bold shrink-0 z-10">
-                    {step.stepOrder}
-                  </div>
-                  {idx < arr.length - 1 && (
-                    <div className="w-px flex-1 bg-gradient-to-b from-emerald-500/30 to-cyan-500/10 my-1 min-h-[16px]" />
-                  )}
-                </div>
-                <div className={`flex-1 pt-0.5 ${idx < arr.length - 1 ? 'pb-5' : ''}`}>
-                  <p className="text-sm text-slate-300 leading-relaxed">{step.description}</p>
-                  {step.expected && (
-                    <p className="mt-1 text-xs text-slate-500 flex items-center gap-1">
-                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                        <path d="M2 5l2.5 2.5L8 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                      </svg>
-                      {step.expected}
+            .map((s, idx, arr) => (
+              <li key={s.id} className="flex gap-3 relative">
+                {idx < arr.length - 1 && (
+                  <div className="absolute left-[9px] top-5 bottom-[-12px] w-px bg-gradient-to-b from-emerald-500/30 to-cyan-500/10" />
+                )}
+                <span className="w-5 h-5 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 text-white text-[10px] font-black flex items-center justify-center shrink-0 shadow-sm shadow-emerald-900/50 relative z-10">
+                  {s.stepOrder}
+                </span>
+                <div className="flex-1 min-w-0 pt-0.5">
+                  <p className="text-xs text-slate-300 leading-relaxed">{s.description}</p>
+                  {s.expected && (
+                    <p className="text-[10px] text-slate-500 mt-1 flex items-center gap-1">
+                      <span className="text-emerald-400">→</span> {s.expected}
                     </p>
                   )}
                 </div>
               </li>
             ))}
         </ol>
-      </section>
+      </div>
 
       {/* Rules */}
-      <section className="space-y-4">
-        <div className="flex items-center gap-3 pb-3 border-b border-[#2A3042]">
-          <span className="w-6 h-6 rounded-lg bg-cyan-500/20 flex items-center justify-center shrink-0">
-            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" className="text-cyan-400">
-              <rect x="1.5" y="1.5" width="10" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
-              <line x1="4" y1="4.5" x2="9" y2="4.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
-              <line x1="4" y1="6.5" x2="9" y2="6.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
-              <line x1="4" y1="8.5" x2="7" y2="8.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
-            </svg>
-          </span>
-          <h2 className="text-sm font-bold text-slate-200 uppercase tracking-widest">비즈니스 규칙</h2>
-          <span className="text-xs text-slate-600">{useCase.rules.length}개</span>
-        </div>
-        <ul className="space-y-4">
+      <div className="rounded-2xl border border-[#2A3042] bg-[#161B27] p-5 shadow-sm">
+        <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3">비즈니스 규칙</h4>
+        <ul className="space-y-3">
           {useCase.rules.map(rule => (
-            <li key={rule.id} className="flex gap-3">
-              <div className="w-0.5 shrink-0 rounded-full bg-gradient-to-b from-cyan-400 to-blue-500 self-stretch mt-1" />
-              <div className="flex-1 space-y-2">
-                <p className="text-sm text-slate-300 leading-relaxed">{rule.description}</p>
-                <code className="block bg-[#0D1117] text-cyan-300 rounded-lg px-3 py-2 font-mono text-xs leading-relaxed border border-cyan-500/20 overflow-x-auto whitespace-pre-wrap break-all">
+            <li key={rule.id} className="border-l-[3px] border-cyan-400 pl-3">
+              <p className="text-xs text-slate-300 leading-relaxed">{rule.description}</p>
+              {rule.constraint && (
+                <code className="mt-1.5 block bg-[#0D1117] text-cyan-300 rounded-lg px-3 py-1.5 font-mono text-[10px] leading-relaxed overflow-x-auto border border-[#2A3042]">
                   {rule.constraint}
                 </code>
-              </div>
+              )}
             </li>
           ))}
         </ul>
-      </section>
+      </div>
 
       {/* Exceptions */}
       {useCase.exceptions.length > 0 && (
-        <section className="space-y-4">
-          <div className="flex items-center gap-3 pb-3 border-b border-[#2A3042]">
-            <span className="w-6 h-6 rounded-lg bg-rose-500/20 flex items-center justify-center shrink-0">
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" className="text-rose-400">
-                <path d="M6.5 1.5L11.5 10.5H1.5L6.5 1.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
-                <line x1="6.5" y1="5" x2="6.5" y2="7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                <circle cx="6.5" cy="9" r="0.75" fill="currentColor"/>
-              </svg>
-            </span>
-            <h2 className="text-sm font-bold text-slate-200 uppercase tracking-widest">예외 처리</h2>
-            <span className="text-xs text-slate-600">{useCase.exceptions.length}개</span>
-          </div>
-          <ul className="space-y-4">
+        <div className="rounded-2xl border border-[#2A3042] bg-[#161B27] p-5 shadow-sm">
+          <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3">예외 처리</h4>
+          <ul className="space-y-3">
             {useCase.exceptions.map(exc => (
-              <li key={exc.id} className="flex gap-3">
-                <div className="w-0.5 shrink-0 rounded-full bg-gradient-to-b from-rose-400 to-orange-500 self-stretch mt-1" />
-                <div className="flex-1 space-y-1.5">
-                  <p className="text-sm text-slate-300 leading-relaxed">{exc.condition}</p>
-                  <p className="text-xs text-slate-500">
-                    <span className="font-semibold text-rose-400/70">처리: </span>{exc.handling}
-                  </p>
-                </div>
+              <li key={exc.id} className="border-l-[3px] border-rose-400 pl-3">
+                <p className="text-xs font-semibold text-slate-300">{exc.condition}</p>
+                <p className="text-[10px] text-slate-500 mt-0.5 leading-relaxed">{exc.handling}</p>
               </li>
             ))}
           </ul>
-        </section>
+        </div>
       )}
     </div>
   )
