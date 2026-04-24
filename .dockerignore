@@ -1,0 +1,19 @@
+# deps
+node_modules
+**/node_modules
+
+# Next.js
+**/.next
+**/out
+**/dist
+
+# Java/Gradle
+packages/mcp-server/build
+packages/mcp-server/.gradle
+**/*.class
+
+# misc
+**/.env*
+**/.git
+**/.DS_Store
+**/coverage
