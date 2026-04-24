@@ -25,10 +25,11 @@ services:
     volumes:
       - qdrant_data:/qdrant/storage
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:6333/healthz || exit 1"]
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/6333'"]
       interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 10
+      start_period: 10s
 
   mcp-server:
     build:
@@ -52,7 +53,7 @@ services:
       qdrant:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health 2>/dev/null || curl -f http://localhost:8080/usecases 2>/dev/null || exit 1"]
+      test: ["CMD-SHELL", "wget -qO /dev/null http://localhost:8080/usecases"]
       interval: 10s
       timeout: 5s
       retries: 10
