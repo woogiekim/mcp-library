@@ -77,6 +77,26 @@ async function createWindow() {
 
   mainWindow.loadURL(APP_URL)
 
+  // macOS hiddenInset: 웹 콘텐츠가 타이틀바 영역을 덮어 드래그 불가 → 상단에 드래그 핸들 주입
+  if (process.platform === 'darwin') {
+    mainWindow.webContents.on('did-finish-load', () => {
+      mainWindow?.webContents.insertCSS(`
+        body::before {
+          content: '';
+          position: fixed;
+          top: 0;
+          left: 72px;
+          right: 0;
+          height: 28px;
+          -webkit-app-region: drag;
+          -webkit-user-select: none;
+          z-index: 99999;
+          pointer-events: auto;
+        }
+      `)
+    })
+  }
+
   if (!app.isPackaged) {
     mainWindow.webContents.openDevTools({ mode: 'detach' })
   }

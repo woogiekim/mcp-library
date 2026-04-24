@@ -42,23 +42,33 @@ services:
       DB_PASSWORD: mcp
       QDRANT_HOST: qdrant
       QDRANT_PORT: "6334"
-      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      LLM_PROVIDER: ${LLM_PROVIDER:-mock}
+      LLM_MODEL: ${LLM_MODEL:-}
+      LLM_BASE_URL: ${LLM_BASE_URL:-}
+      LLM_API_KEY: ${LLM_API_KEY:-}
     depends_on:
       postgres:
         condition: service_healthy
       qdrant:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health 2>/dev/null || curl -f http://localhost:8080/usecases 2>/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
 
   web-app:
     build:
-      context: ./packages/web-app
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: packages/web-app/Dockerfile
     ports:
       - "3000:3000"
     environment:
       MCP_SERVER_URL: http://mcp-server:8080
     depends_on:
-      - mcp-server
+      mcp-server:
+        condition: service_healthy
 
 volumes:
   postgres_data:

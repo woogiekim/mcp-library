@@ -4,7 +4,7 @@
   "private": true,
   "main": "dist/electron/main.js",
   "scripts": {
-    "dev": "wait-on http://localhost:3000 && electron .",
+    "dev": "tsc -p tsconfig.electron.json && wait-on http://localhost:3000 && electron .",
     "build": "tsc -p tsconfig.electron.json",
     "pack": "npm run build && electron-builder",
     "typecheck": "tsc -p tsconfig.electron.json --noEmit"
