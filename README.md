@@ -4,13 +4,9 @@
 
 팀의 비즈니스 프로세스를 **시나리오 · 비즈니스 규칙 · 예외 처리** 구조로 저장하고, 누구나 자연어로 빠르게 찾아볼 수 있습니다. 복잡한 업무 지식이 개인의 머릿속에만 있는 문제를 해결합니다.
 
----
-
 ## Visuals
 
 > 스크린샷 / GIF 추가 예정
-
----
 
 ## Features
 
@@ -20,8 +16,6 @@
 - **자연어 검색** — 키워드로 UseCase 목록을 빠르게 탐색
 - **상세 조회 & 삭제** — 등록된 UseCase의 전체 내용 확인 및 관리
 - **OpenAI 호환 LLM** — OpenAI API 또는 로컬 Ollama 모두 지원
-
----
 
 ## Installation
 
@@ -110,8 +104,6 @@ LLM_API_KEY=ollama
 # LLM_API_KEY=sk-...
 ```
 
----
-
 ## Usage
 
 ### UseCase 등록
@@ -124,8 +116,6 @@ LLM_API_KEY=ollama
 ### UseCase 검색
 
 메인 화면 검색창에 자연어로 입력 (예: `결제 취소`, `회원 등급 기준`, `배송 상태 조회`)
-
----
 
 ## Architecture
 
@@ -152,8 +142,6 @@ mcp-library/
 │   └── types/            # 공유 TypeScript 타입
 └── docker-compose.yml
 ```
-
----
 
 ## License
 
