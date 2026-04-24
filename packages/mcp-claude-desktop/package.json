@@ -1,0 +1,26 @@
+{
+  "name": "@mcp-library/mcp-claude-desktop",
+  "version": "0.1.0",
+  "description": "MCP stdio server for Claude Desktop — wraps MCP Library REST API",
+  "type": "module",
+  "main": "src/index.ts",
+  "bin": {
+    "mcp-library-server": "./src/index.ts"
+  },
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
