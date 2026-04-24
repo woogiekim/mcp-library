@@ -9,8 +9,8 @@ interface Props {
 
 async function fetchUseCase(id: string): Promise<UseCase | null> {
   try {
-    const res = await fetch(`${process.env.MCP_SERVER_URL}/usecases/${id}`, {
-      next: { revalidate: 60 },
+    const res = await fetch(`${process.env.MCP_SERVER_URL ?? 'http://localhost:8080'}/usecases/${id}`, {
+      cache: 'no-store',
     })
     if (!res.ok) return null
     return res.json()
