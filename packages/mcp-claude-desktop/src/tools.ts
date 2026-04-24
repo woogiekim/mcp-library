@@ -133,4 +133,62 @@ export const tools: Tool[] = [
       required: ["id"],
     },
   },
+  {
+    name: "bulk_create_usecases",
+    description:
+      "여러 UseCase를 한 번에 일괄 등록합니다. 요구사항 문서에서 추출한 UseCase를 배열로 전달하세요.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        usecases: {
+          type: "array",
+          description: "등록할 UseCase 배열",
+          items: {
+            type: "object",
+            properties: {
+              domain: { type: "string", description: "도메인 (예: order, member)" },
+              title: { type: "string", description: "UseCase 제목" },
+              version: { type: "string", description: "버전 (기본값: 1.0.0)" },
+              scenarios: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    stepOrder: { type: "number" },
+                    description: { type: "string" },
+                    expected: { type: "string" },
+                  },
+                  required: ["stepOrder", "description"],
+                },
+              },
+              rules: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    description: { type: "string" },
+                    constraint: { type: "string" },
+                  },
+                  required: ["description", "constraint"],
+                },
+              },
+              exceptions: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    condition: { type: "string" },
+                    handling: { type: "string" },
+                  },
+                  required: ["condition", "handling"],
+                },
+              },
+            },
+            required: ["domain", "title", "scenarios", "rules"],
+          },
+        },
+      },
+      required: ["usecases"],
+    },
+  },
 ];
