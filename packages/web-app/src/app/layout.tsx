@@ -28,14 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 href="/"
                 className="px-3 py-1.5 text-xs font-medium text-slate-400 hover:text-violet-400 hover:bg-violet-500/10 rounded-md transition-all"
               >
-                Search
-              </a>
-              <div className="w-px h-3 bg-[#2A3042] mx-1" />
-              <a
-                href="/usecases"
-                className="px-3 py-1.5 text-xs font-medium text-slate-400 hover:text-violet-400 hover:bg-violet-500/10 rounded-md transition-all"
-              >
-                목록
+                라이브러리
               </a>
               <div className="w-px h-3 bg-[#2A3042] mx-1" />
               <a
@@ -52,7 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </header>
 
-        <main className="max-w-5xl mx-auto px-6 py-10 flex-1">
+        <main className="w-full max-w-5xl mx-auto px-6 py-10 flex-1">
           {children}
         </main>
 

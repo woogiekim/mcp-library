@@ -1,172 +1,23 @@
-'use client'
-
-import { useState } from 'react'
-import { SearchBar } from '@/components/SearchBar'
-import { UseCaseCard } from '@/components/UseCaseCard'
 import type { UseCase } from '@mcp-library/types'
+import { LibraryView } from '@/components/LibraryView'
 
-const DOMAIN_ORDER = ['order', 'payment', 'member', 'review', 'coupon', 'settlement']
-const DOMAIN_LABEL: Record<string, string> = {
-  order: '주문', payment: '결제', member: '회원',
-  review: '리뷰', coupon: '쿠폰', settlement: '정산',
-}
-const DOMAIN_COLOR: Record<string, string> = {
-  order:      'text-violet-400 border-violet-500/30 bg-violet-500/10',
-  payment:    'text-rose-400 border-rose-500/30 bg-rose-500/10',
-  member:     'text-blue-400 border-blue-500/30 bg-blue-500/10',
-  review:     'text-emerald-400 border-emerald-500/30 bg-emerald-500/10',
-  coupon:     'text-amber-400 border-amber-500/30 bg-amber-500/10',
-  settlement: 'text-cyan-400 border-cyan-500/30 bg-cyan-500/10',
-}
-
-function groupByDomain(useCases: UseCase[]): [string, UseCase[]][] {
-  const map = new Map<string, UseCase[]>()
-  for (const uc of useCases) {
-    const d = uc.domain.toLowerCase()
-    if (!map.has(d)) map.set(d, [])
-    map.get(d)!.push(uc)
+async function fetchAllUseCases(): Promise<UseCase[]> {
+  try {
+    const res = await fetch(`${process.env.MCP_SERVER_URL}/usecases`, {
+      next: { revalidate: 30 },
+    })
+    if (!res.ok) return []
+    return res.json()
+  } catch {
+    return []
   }
-  const ordered: [string, UseCase[]][] = []
-  for (const d of DOMAIN_ORDER) {
-    if (map.has(d)) ordered.push([d, map.get(d)!])
-  }
-  for (const [d, ucs] of map) {
-    if (!DOMAIN_ORDER.includes(d)) ordered.push([d, ucs])
-  }
-  return ordered
 }
 
-export default function HomePage() {
-  const [results, setResults] = useState<UseCase[]>([])
-  const [loading, setLoading] = useState(false)
-  const [query, setQuery] = useState('')
-  const [hasSearched, setHasSearched] = useState(false)
-
-  async function handleSearch(q: string) {
-    setQuery(q)
-    setLoading(true)
-    setHasSearched(true)
-    try {
-      const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`)
-      const data = await res.json()
-      setResults(data.useCases ?? [])
-    } finally {
-      setLoading(false)
-    }
-  }
-
+export default async function HomePage() {
+  const useCases = await fetchAllUseCases()
   return (
-    <div className="space-y-8">
-      {/* Hero */}
-      <div className="text-center space-y-5 pt-14 pb-2">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-xs font-medium text-violet-400">
-          <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
-          MCP · UseCase-Grounded AI
-        </div>
-
-        <h1 className="text-5xl sm:text-6xl font-black tracking-tight text-slate-100 leading-[1.1]">
-          도메인 지식을{' '}
-          <span className="text-gradient-violet">자연어</span>
-          로 검색
-        </h1>
-
-        <p className="text-slate-500 text-sm max-w-lg mx-auto leading-relaxed">
-          팀이 정의한 UseCase를 기반으로 AI가 정확하게 답변합니다.
-          규칙과 시나리오에 근거한 신뢰할 수 있는 지식 검색.
-        </p>
-      </div>
-
-      {/* Search */}
-      <div className="max-w-2xl mx-auto">
-        <SearchBar onSearch={handleSearch} />
-      </div>
-
-      {/* Loading */}
-      {loading && (
-        <div className="space-y-3 max-w-2xl mx-auto">
-          {[1, 2, 3].map(i => (
-            <div key={i} className="rounded-2xl border border-[#2A3042] bg-[#161B27] p-5 space-y-3">
-              <div className="flex gap-2">
-                <div className="shimmer h-5 w-16 rounded-full" />
-                <div className="shimmer h-5 w-12 rounded-full" />
-              </div>
-              <div className="shimmer h-4 w-3/4 rounded-lg" />
-              <div className="shimmer h-3 w-1/2 rounded-lg" />
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Results */}
-      {!loading && results.length > 0 && (
-        <div className="space-y-6">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-medium text-slate-600">검색어</span>
-            <span className="px-2.5 py-0.5 rounded-full bg-violet-500/15 text-violet-300 text-xs font-semibold border border-violet-500/30">
-              {query}
-            </span>
-            <span className="text-xs text-slate-600">— {results.length}개 결과</span>
-          </div>
-
-          {groupByDomain(results).map(([domain, ucs]) => (
-            <section key={domain}>
-              <div className="flex items-center gap-3 mb-3">
-                <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${DOMAIN_COLOR[domain] ?? 'text-slate-400 border-slate-500/30 bg-slate-500/10'}`}>
-                  {DOMAIN_LABEL[domain] ?? domain}
-                </span>
-                <span className="text-xs text-slate-600">{ucs.length}개</span>
-                <div className="flex-1 h-px bg-[#2A3042]" />
-              </div>
-              <div className="grid gap-3">
-                {ucs.map(uc => (
-                  <UseCaseCard key={uc.id} useCase={uc} />
-                ))}
-              </div>
-            </section>
-          ))}
-        </div>
-      )}
-
-      {/* Empty */}
-      {!loading && hasSearched && results.length === 0 && (
-        <div className="text-center py-16 space-y-3">
-          <div className="w-12 h-12 rounded-2xl bg-[#1E2433] flex items-center justify-center mx-auto">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-slate-500">
-              <circle cx="11" cy="11" r="8"/>
-              <path d="M21 21l-4.35-4.35"/>
-            </svg>
-          </div>
-          <p className="text-sm text-slate-400 font-medium">
-            &quot;{query}&quot;에 해당하는 UseCase가 없습니다
-          </p>
-          <p className="text-xs text-slate-600">다른 키워드로 검색해보세요</p>
-        </div>
-      )}
-
-      {/* Initial empty state */}
-      {!hasSearched && (
-        <div className="space-y-3 max-w-xl mx-auto">
-          <p className="text-center text-[10px] text-slate-600 uppercase tracking-widest font-semibold">검색 예시</p>
-          <div className="flex flex-wrap gap-2 justify-center">
-            {[
-              { label: '결제 취소 정책', emoji: '💳' },
-              { label: '회원 등급 기준', emoji: '🏅' },
-              { label: '주문 취소 조건', emoji: '📦' },
-              { label: '쿠폰 적용 규칙', emoji: '🎟' },
-              { label: '리뷰 작성 정책', emoji: '⭐' },
-            ].map(({ label, emoji }) => (
-              <button
-                key={label}
-                onClick={() => handleSearch(label)}
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-[#2A3042] bg-[#161B27] hover:border-violet-500/50 hover:bg-violet-500/10 hover:text-violet-300 transition-all text-xs text-slate-500 group"
-              >
-                <span>{emoji}</span>
-                <span>{label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+    <div className="max-w-2xl mx-auto w-full">
+      <LibraryView initialUseCases={useCases} />
     </div>
   )
 }
