@@ -81,11 +81,20 @@ export default function NewUseCasePage() {
       const data = await res.json()
       if (data.useCase) {
         const uc = data.useCase
+        const str = (v: unknown) => (typeof v === 'string' ? v : v == null ? '' : JSON.stringify(v))
         setExtracted({
-          ...uc,
-          scenarios:  Array.isArray(uc.scenarios)  ? uc.scenarios  : [],
-          rules:      Array.isArray(uc.rules)       ? uc.rules      : [],
-          exceptions: Array.isArray(uc.exceptions)  ? uc.exceptions : [],
+          domain:  str(uc.domain),
+          title:   str(uc.title),
+          version: str(uc.version) || '1.0.0',
+          scenarios: Array.isArray(uc.scenarios)
+            ? uc.scenarios.map((s: Record<string, unknown>) => ({ stepOrder: Number(s.stepOrder) || 0, description: str(s.description), expected: s.expected ? str(s.expected) : null }))
+            : [],
+          rules: Array.isArray(uc.rules)
+            ? uc.rules.map((r: Record<string, unknown>) => ({ description: str(r.description), constraint: str(r.constraint) }))
+            : [],
+          exceptions: Array.isArray(uc.exceptions)
+            ? uc.exceptions.map((e: Record<string, unknown>) => ({ condition: str(e.condition), handling: str(e.handling) }))
+            : [],
         })
       }
     } catch {
